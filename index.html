@@ -652,20 +652,26 @@ function applyOrdersLockUI(locked) {
   if (toggle) toggle.checked = locked;
 }
 
-function applyLockUI(locked) {
-  const editor    = document.getElementById('mainMenuEditor');
-  const banner    = document.getElementById('lockBanner');
-  const nameInput = document.getElementById('nameInput');
-  const isAdminUser = isAdmin(nameInput.value.trim());
+function applyLockUI(manualLocked) {
+  const editor      = document.getElementById('mainMenuEditor');
+  const banner      = document.getElementById('lockBanner');
+  const isAdminUser = isAdmin(document.getElementById('nameInput').value.trim());
 
-  if (locked && !isAdminUser) {
+  // Lock if manual lock ON *or* a restaurant is currently active
+  const restaurantActive = !!(lastSettings.activeRestaurant);
+  const effectiveLocked  = manualLocked || restaurantActive;
+
+  if (effectiveLocked && !isAdminUser) {
     editor.style.display = 'none';
     banner.style.display = 'flex';
+    banner.querySelector('span:last-child').textContent = restaurantActive
+      ? 'Menu is set by the active restaurant — only admins can edit it'
+      : 'Menu is managed by admin — only admins can edit the menu';
   } else {
     editor.style.display = 'block';
     banner.style.display = 'none';
   }
-  document.getElementById('lockToggle').checked = locked;
+  document.getElementById('lockToggle').checked = manualLocked;
 }
 
 // ── Delivery fee ───────────────────────────────────────────────────────
@@ -680,6 +686,11 @@ window.addMainMenuItem = async function() {
   const name  = document.getElementById('menuName').value.trim();
   const price = parseFloat(document.getElementById('menuPrice').value) || null;
   if (!name) { showToast('Enter a food name'); return; }
+  const restaurantActive = !!(lastSettings.activeRestaurant);
+  const isAdminUser = isAdmin(getTypedName());
+  if ((restaurantActive || lastSettings.menuLocked) && !isAdminUser) {
+    showToast('Menu is locked — only admins can edit it'); return;
+  }
   if (lastMenu.find(m => m.name.toLowerCase() === name.toLowerCase())) { showToast('Already on the menu!'); return; }
   const item = { name };
   if (price) item.price = price;
@@ -690,6 +701,11 @@ window.addMainMenuItem = async function() {
 };
 
 window.deleteMainMenuItem = async function(key) {
+  const restaurantActive = !!(lastSettings.activeRestaurant);
+  const isAdminUser = isAdmin(getTypedName());
+  if ((restaurantActive || lastSettings.menuLocked) && !isAdminUser) {
+    showToast('Menu is locked — only admins can edit it'); return;
+  }
   await remove(ref(db, 'menu/' + key));
   if (selectedFood && selectedFood.key === key) { selectedFood = null; currentQty = 1; }
   showToast('Removed from menu');
