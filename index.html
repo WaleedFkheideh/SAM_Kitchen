@@ -6,332 +6,264 @@
 <title>SAM Kitchen</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh; color: #1a1208; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh; color: #1a1208; }
 
-  /* ─── HERO HEADER ─────────────────────────────────────────── */
-  .hero {
-    position: relative;
-    min-height: 260px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center;
-    overflow: hidden;
-  }
-  .hero-bg {
-    position: absolute; inset: 0;
-    background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=80');
-    background-size: cover; background-position: center 40%;
-    filter: brightness(0.35) saturate(0.8);
-  }
-  .hero-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(10,8,5,0.3) 0%, rgba(10,8,5,0.85) 100%);
-  }
-  .hero-content { position: relative; z-index: 2; padding: 40px 20px 30px; }
-  .hero-tag {
-    display: inline-block; background: #c8922a; color: #fff;
-    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-    font-weight: 700; padding: 4px 16px; border-radius: 2px; margin-bottom: 14px;
-  }
-  .hero h1 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(38px, 7vw, 64px); font-weight: 900;
-    color: #f5e6c8; letter-spacing: 2px; line-height: 1.1;
-    text-shadow: 0 2px 20px rgba(0,0,0,0.6);
-  }
-  .hero-sub {
-    margin-top: 10px; color: #c8a97a;
-    font-size: 13px; letter-spacing: 3px; text-transform: uppercase; font-weight: 500;
-  }
-  .hero-divider {
-    position: relative; z-index: 2;
-    display: flex; align-items: center; justify-content: center; gap: 12px;
-    padding: 0 20px 20px;
-  }
-  .hero-divider::before, .hero-divider::after {
-    content: ''; flex: 1; max-width: 120px; height: 1px; background: #c8922a44;
-  }
-  .hero-divider span { color: #c8922a; font-size: 18px; }
+/* ─── HERO ─────────────────────────────────────────────────────── */
+.hero { position: relative; min-height: 270px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=80'); background-size: cover; background-position: center 40%; filter: brightness(0.32) saturate(0.8); }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,8,5,0.2) 0%, rgba(10,8,5,0.88) 100%); }
+.hero-content { position: relative; z-index: 2; padding: 44px 20px 16px; }
+.hero-tag { display: inline-block; background: #c8922a; color: #fff; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 700; padding: 4px 16px; border-radius: 2px; margin-bottom: 14px; }
+.hero h1 { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(36px, 7vw, 64px); font-weight: 900; color: #f5e6c8; letter-spacing: 2px; line-height: 1.1; text-shadow: 0 2px 20px rgba(0,0,0,0.6); }
+.hero-sub { margin-top: 10px; color: #c8a97a; font-size: 13px; letter-spacing: 4px; text-transform: uppercase; font-weight: 500; }
+.tagline-strip { position: relative; z-index: 2; padding: 12px 20px 22px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+.tagline-strip .tl-line { flex: 1; max-width: 140px; height: 1px; background: #c8922a55; }
+.tagline-strip .tl-text { font-family: 'Playfair Display', serif; font-size: 15px; color: #e8c87a; font-style: italic; letter-spacing: 1px; white-space: nowrap; }
 
-  /* ─── NAV STRIP ───────────────────────────────────────────── */
-  .nav-strip {
-    background: #c8922a;
-    display: flex; justify-content: center;
-    border-bottom: 2px solid #a07218;
-  }
-  .nav-strip span {
-    padding: 10px 28px; font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-    color: #fff; font-weight: 700; border-right: 1px solid rgba(255,255,255,0.2);
-  }
-  .nav-strip span:last-child { border-right: none; }
+/* ─── TABS ──────────────────────────────────────────────────────── */
+.tabs-bar { background: #1c1208; border-bottom: 2px solid #c8922a44; display: flex; position: sticky; top: 0; z-index: 100; }
+.tab-btn { padding: 13px 28px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; color: #5a4a2a; background: none; border: none; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.2s; font-family: 'Inter', sans-serif; }
+.tab-btn:hover { color: #c8a97a; }
+.tab-btn.active { color: #c8922a; border-bottom-color: #c8922a; }
+.tab-btn.admin-tab { color: #4a7a5a; }
+.tab-btn.admin-tab:hover { color: #6aaa8a; }
+.tab-btn.admin-tab.active { color: #5BAD8F; border-bottom-color: #5BAD8F; }
 
-  /* ─── MENU SECTION ─────────────────────────────────────────── */
-  .menu-section {
-    position: relative; overflow: hidden;
-    background: #1c1208;
-    border-bottom: 2px solid #c8922a44;
-  }
-  .menu-section-bg {
-    position: absolute; inset: 0;
-    background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=60');
-    background-size: cover; background-position: center;
-    opacity: 0.08;
-  }
-  .menu-section-inner {
-    position: relative; z-index: 1;
-    max-width: 940px; margin: 0 auto; padding: 30px 28px;
-  }
-  .section-heading {
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 20px;
-  }
-  .section-heading .sh-line { flex: 1; height: 1px; background: #c8922a44; }
-  .section-heading .sh-text {
-    font-family: 'Playfair Display', serif; font-size: 20px; color: #f5e6c8;
-    white-space: nowrap;
-  }
-  .section-heading .sh-icon { color: #c8922a; font-size: 18px; }
+/* ─── TAB PANELS ────────────────────────────────────────────────── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
 
-  .menu-add-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 20px; }
-  .menu-add-row .field { display: flex; flex-direction: column; gap: 5px; }
-  .menu-add-row label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #8a7355; font-weight: 600; }
-  .menu-add-row input {
-    padding: 9px 12px; border: 1px solid #3a2e1a; border-radius: 4px;
-    font-size: 14px; font-family: inherit; background: #2a1f0e; color: #f0ddb8; outline: none;
-    transition: border-color 0.2s;
-  }
-  .menu-add-row input::placeholder { color: #5a4a2a; }
-  .menu-add-row input:focus { border-color: #c8922a; }
-  .menu-add-row input.emoji-input { width: 64px; text-align: center; font-size: 20px; }
-  .btn-add-menu {
-    padding: 10px 22px; background: #c8922a; color: #fff; border: none; border-radius: 4px;
-    font-size: 11px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
-    cursor: pointer; white-space: nowrap; transition: background 0.15s;
-  }
-  .btn-add-menu:hover { background: #a07218; }
+/* ─── MENU SECTION ──────────────────────────────────────────────── */
+.menu-section { position: relative; overflow: hidden; background: #1c1208; border-bottom: 2px solid #c8922a44; }
+.menu-section-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=60'); background-size: cover; background-position: center; opacity: 0.07; }
+.menu-section-inner { position: relative; z-index: 1; max-width: 940px; margin: 0 auto; padding: 28px 28px; }
 
-  .menu-chips-row { display: flex; gap: 10px; flex-wrap: wrap; }
-  .menu-chip {
-    display: flex; align-items: center; gap: 8px;
-    background: #2a1f0e; border: 1px solid #3a2e1a; border-radius: 30px;
-    padding: 7px 14px 7px 10px; transition: border-color 0.15s;
-  }
-  .menu-chip:hover { border-color: #c8922a44; }
-  .menu-chip .mc-emoji { font-size: 20px; }
-  .menu-chip .mc-name { font-size: 13px; font-weight: 600; color: #f0ddb8; }
-  .menu-chip .mc-del { cursor: pointer; color: #4a3a1a; font-size: 15px; margin-left: 4px; transition: color 0.15s; }
-  .menu-chip .mc-del:hover { color: #e74c3c; }
-  .menu-empty { font-size: 13px; color: #5a4a2a; font-style: italic; }
+.restaurant-name-wrap { text-align: center; margin-bottom: 18px; }
+.restaurant-name-input { background: transparent; border: none; border-bottom: 2px dashed #c8922a66; color: #f5e6c8; font-family: 'Playfair Display', serif; font-size: clamp(20px, 4vw, 32px); font-weight: 700; font-style: italic; text-align: center; width: 100%; max-width: 500px; outline: none; padding: 4px 12px; letter-spacing: 1px; transition: border-color 0.2s; }
+.restaurant-name-input::placeholder { color: #5a4020; }
+.restaurant-name-input:focus { border-bottom-color: #c8922a; }
+.restaurant-name-hint { font-size: 10px; letter-spacing: 1px; color: #5a4020; text-transform: uppercase; margin-top: 4px; }
+.restaurant-name-input[readonly] { opacity: 0.7; cursor: default; border-bottom-color: transparent; }
 
-  /* ─── ORDER SECTION ────────────────────────────────────────── */
-  .order-section-wrap {
-    position: relative; overflow: hidden;
-    background: #fdf8f0;
-    border-bottom: 1px solid #e8d9c0;
-  }
-  .order-section-bg {
-    position: absolute; inset: 0;
-    background-image: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=1200&q=50');
-    background-size: cover; background-position: center;
-    opacity: 0.04;
-  }
-  .order-section-inner {
-    position: relative; z-index: 1;
-    max-width: 940px; margin: 0 auto; padding: 30px 28px;
-  }
+.section-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.sh-line { flex: 1; height: 1px; background: #c8922a44; }
+.sh-text { font-family: 'Playfair Display', serif; font-size: 19px; color: #f5e6c8; white-space: nowrap; }
+.sh-text-dark { color: #1a1208; }
+.sh-icon { color: #c8922a; font-size: 15px; }
 
-  /* Order card */
-  .order-card {
-    background: rgba(255,255,255,0.95);
-    border: 1px solid #e2cfa8;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(200,146,42,0.1);
-  }
-  .order-card-accent { height: 4px; background: linear-gradient(90deg, #c8922a, #e8b85a, #c8922a); }
+.menu-picture-frame { width: 100%; max-width: 680px; margin: 0 auto 22px; border-radius: 8px; overflow: hidden; border: 1px solid #3a2e1a; box-shadow: 0 8px 32px rgba(0,0,0,0.5); position: relative; }
+.menu-picture-frame img { width: 100%; display: block; object-fit: cover; height: 200px; opacity: 0.9; }
+.menu-pic-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, rgba(10,6,2,0.85) 0%, transparent 100%); padding: 18px 20px 10px; font-family: 'Playfair Display', serif; font-size: 12px; color: #c8a97a; letter-spacing: 2px; text-transform: uppercase; text-align: center; }
 
-  .order-form-row {
-    display: grid; grid-template-columns: 220px 1fr 200px;
-    align-items: stretch;
-  }
-  @media(max-width:720px){ .order-form-row { grid-template-columns: 1fr; } }
+/* Lock banner */
+.lock-banner { background: #2a1208; border: 1px solid #c8922a44; border-radius: 6px; padding: 8px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: #c8a97a; font-family: 'Inter', sans-serif; }
+.lock-banner .lb-icon { font-size: 16px; }
 
-  .form-block { padding: 22px 24px; border-right: 1px solid #f0e4cc; }
-  .form-block:last-child { border-right: none; }
-  @media(max-width:720px){ .form-block { border-right: none; border-bottom: 1px solid #f0e4cc; } }
-  @media(max-width:720px){ .form-block:last-child { border-bottom: none; } }
+.menu-add-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 18px; }
+.menu-add-row .field { display: flex; flex-direction: column; gap: 5px; }
+.menu-add-row label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #8a7355; font-weight: 600; }
+.menu-add-row input { padding: 9px 14px; border: 1px solid #3a2e1a; border-radius: 4px; font-size: 14px; font-family: inherit; background: #2a1f0e; color: #f0ddb8; outline: none; transition: border-color 0.2s; }
+.menu-add-row input::placeholder { color: #5a4a2a; }
+.menu-add-row input:focus { border-color: #c8922a; }
+.btn-add-menu { padding: 10px 22px; background: #c8922a; color: #fff; border: none; border-radius: 4px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.btn-add-menu:hover { background: #a07218; }
 
-  .form-block label {
-    display: block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
-    color: #b8956a; font-weight: 700; margin-bottom: 10px;
-  }
-  .form-block input {
-    width: 100%; padding: 10px 14px; border: 1px solid #e2cfa8; border-radius: 4px;
-    font-size: 15px; font-family: inherit; background: #fffcf5; color: #1a1208; outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .form-block input:focus { border-color: #c8922a; box-shadow: 0 0 0 3px rgba(200,146,42,0.12); background: #fff; }
-  .form-block textarea {
-    width: 100%; padding: 10px 14px; border: 1px solid #e2cfa8; border-radius: 4px;
-    font-size: 14px; font-family: inherit; background: #fffcf5; color: #1a1208; outline: none;
-    resize: none; height: 48px; transition: border-color 0.2s;
-  }
-  .form-block textarea:focus { border-color: #c8922a; background: #fff; }
+.menu-chips-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.menu-chip { display: flex; align-items: center; gap: 8px; background: #c8922a; border-radius: 6px; padding: 9px 16px; box-shadow: 0 2px 8px rgba(200,146,42,0.25); }
+.menu-chip:hover { background: #a07218; }
+.menu-chip .mc-name { font-size: 14px; font-weight: 700; color: #fff; font-family: 'Playfair Display', serif; }
+.menu-chip .mc-price { font-size: 12px; color: rgba(255,255,255,0.75); font-family: 'Inter', sans-serif; margin-left: 2px; }
+.menu-chip .mc-del { cursor: pointer; color: rgba(255,255,255,0.45); font-size: 15px; margin-left: 4px; transition: color 0.15s; }
+.menu-chip .mc-del:hover { color: #fff; }
+.menu-empty { font-size: 13px; color: #5a4a2a; font-style: italic; }
 
-  .edit-hint {
-    margin-top: 8px; font-size: 11px; color: #c8922a;
-    font-style: italic; display: none; line-height: 1.4;
-  }
+/* ─── ORDER SECTION ─────────────────────────────────────────────── */
+.order-section-wrap { position: relative; overflow: hidden; background: #fdf8f0; border-bottom: 1px solid #e8d9c0; }
+.order-section-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=1200&q=50'); background-size: cover; background-position: center; opacity: 0.04; }
+.order-section-inner { position: relative; z-index: 1; max-width: 940px; margin: 0 auto; padding: 28px 28px; }
 
-  /* Food tiles */
-  .food-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-  .food-tile {
-    border: 2px solid #e2cfa8; border-radius: 8px; padding: 10px 14px;
-    cursor: pointer; transition: all 0.15s; background: #fffcf5;
-    display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 78px;
-  }
-  .food-tile:hover { border-color: #c8922a; background: #fff8ec; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(200,146,42,0.15); }
-  .food-tile.selected { border-color: #c8922a; background: #fff3d6; box-shadow: 0 0 0 3px rgba(200,146,42,0.2); }
-  .food-tile .tile-emoji { font-size: 26px; }
-  .food-tile .tile-name { font-size: 11px; font-weight: 700; color: #1a1208; line-height: 1.2; text-align: center; }
-  .food-tile.selected .tile-name { color: #c8922a; }
-  .no-menu-msg { font-size: 13px; color: #c8b08a; font-style: italic; padding: 8px 0; }
+.order-card { background: rgba(255,255,255,0.97); border: 1px solid #e2cfa8; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+.order-card-accent { height: 4px; background: linear-gradient(90deg, #c8922a, #e8b85a, #c8922a); }
+.order-form-row { display: grid; grid-template-columns: 200px 1fr 220px; align-items: stretch; }
+@media(max-width:720px) { .order-form-row { grid-template-columns: 1fr; } }
+.form-block { padding: 20px 22px; border-right: 1px solid #f0e4cc; }
+.form-block:last-child { border-right: none; }
+@media(max-width:720px) { .form-block { border-right: none; border-bottom: 1px solid #f0e4cc; } }
+@media(max-width:720px) { .form-block:last-child { border-bottom: none; } }
+.form-block label { display: block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: #b8956a; font-weight: 700; margin-bottom: 10px; }
+.form-block input { width: 100%; padding: 10px 14px; border: 1px solid #e2cfa8; border-radius: 4px; font-size: 15px; font-family: inherit; background: #fffcf5; color: #1a1208; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+.form-block input:focus { border-color: #c8922a; box-shadow: 0 0 0 3px rgba(200,146,42,0.12); background: #fff; }
+.edit-hint { margin-top: 8px; font-size: 11px; color: #c8922a; font-style: italic; display: none; line-height: 1.4; }
 
-  /* Buttons */
-  .btn-submit {
-    width: 100%; padding: 12px; background: #c8922a; color: #fff; border: none; border-radius: 4px;
-    font-size: 12px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700;
-    cursor: pointer; transition: all 0.15s; margin-top: 8px;
-  }
-  .btn-submit:first-child { margin-top: 0; }
-  .btn-submit:hover { background: #a07218; }
-  .btn-submit:active { transform: scale(0.98); }
-  .btn-replace { background: #2d6a4f !important; }
-  .btn-replace:hover { background: #1b4332 !important; }
-  .btn-delete { background: #c0392b !important; }
-  .btn-delete:hover { background: #922b21 !important; }
+/* Food tiles */
+.food-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.food-tile { border: 2px solid #e2cfa8; border-radius: 8px; padding: 8px 14px; cursor: pointer; transition: all 0.15s; background: #fffcf5; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 90px; }
+.food-tile:hover { border-color: #c8922a; background: #fff8ec; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(200,146,42,0.15); }
+.food-tile.selected { border-color: #c8922a; background: #fff3d6; box-shadow: 0 0 0 3px rgba(200,146,42,0.2); }
+.tile-name { font-size: 12px; font-weight: 700; color: #1a1208; }
+.food-tile.selected .tile-name { color: #c8922a; }
+.tile-price { font-size: 10px; color: #b8956a; font-weight: 600; }
+.no-menu-msg { font-size: 13px; color: #c8b08a; font-style: italic; padding: 8px 0; }
 
-  /* ─── ORDER BOARD ──────────────────────────────────────────── */
-  .board-section-wrap {
-    position: relative; overflow: hidden;
-    background: #0f0d0a;
-    min-height: 200px;
-  }
-  .board-section-bg {
-    position: absolute; inset: 0;
-    background-image: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1200&q=50');
-    background-size: cover; background-position: center;
-    opacity: 0.12;
-  }
-  .board-section-inner {
-    position: relative; z-index: 1;
-    max-width: 940px; margin: 0 auto; padding: 30px 28px 50px;
-  }
+/* Quantity selector */
+.qty-selector { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
+.qty-selector label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #b8956a; font-weight: 700; }
+.qty-control { display: flex; align-items: center; gap: 0; border: 1px solid #e2cfa8; border-radius: 4px; overflow: hidden; }
+.qty-btn { width: 32px; height: 32px; background: #fffcf5; border: none; color: #c8922a; font-size: 18px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; font-family: inherit; }
+.qty-btn:hover { background: #fff3d6; }
+.qty-display { width: 36px; text-align: center; font-size: 15px; font-weight: 700; color: #1a1208; background: #fff; border-left: 1px solid #e2cfa8; border-right: 1px solid #e2cfa8; line-height: 32px; }
 
-  .board-toprow {
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
-  }
+/* Price summary box */
+.price-summary { background: #fffcf5; border: 1px solid #e2cfa8; border-radius: 6px; padding: 12px 14px; margin-top: 12px; display: none; }
+.price-summary.visible { display: block; }
+.ps-row { display: flex; justify-content: space-between; font-size: 12px; color: #7a6040; margin-bottom: 4px; font-family: 'Inter', sans-serif; }
+.ps-row:last-child { margin-bottom: 0; padding-top: 6px; border-top: 1px dashed #e2cfa8; font-weight: 700; color: #1a1208; font-size: 13px; }
+.ps-val { font-weight: 600; color: #c8922a; }
 
-  .orders-board {
-    background: rgba(20,15,8,0.85);
-    border: 1px solid #3a2e1a;
-    border-radius: 8px; overflow: hidden;
-    backdrop-filter: blur(4px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
-  .orders-header {
-    background: linear-gradient(135deg, #2a1f0e, #1c1208);
-    padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 8px;
-    border-bottom: 1px solid #c8922a44;
-  }
-  .orders-header h3 {
-    font-family: 'Playfair Display', serif; color: #f5e6c8;
-    font-size: 16px; letter-spacing: 1px;
-  }
-  .order-count {
-    background: #c8922a; color: #fff;
-    font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 20px;
-  }
+.btn-submit { width: 100%; padding: 12px; background: #c8922a; color: #fff; border: none; border-radius: 4px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: all 0.15s; margin-top: 8px; }
+.btn-submit:first-child { margin-top: 0; }
+.btn-submit:hover { background: #a07218; }
+.btn-submit:active { transform: scale(0.98); }
+.btn-replace { background: #2d6a4f !important; } .btn-replace:hover { background: #1b4332 !important; }
+.btn-delete  { background: #c0392b !important; } .btn-delete:hover  { background: #922b21 !important; }
 
-  .group-ticket { border-bottom: 1px solid #2a1f0e; padding: 18px 24px; transition: background 0.15s; }
-  .group-ticket:hover { background: rgba(200,146,42,0.04); }
-  .group-ticket:last-child { border-bottom: none; }
-  .group-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-  .group-order-text {
-    font-family: 'Playfair Display', serif;
-    font-size: 18px; font-weight: 700; color: #f5e6c8;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .group-emoji { font-size: 26px; }
-  .qty-badge {
-    background: #c8922a; color: #fff;
-    font-size: 13px; font-weight: 700; padding: 4px 14px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
-  }
-  .names-row { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+/* ─── BOARD SECTION ─────────────────────────────────────────────── */
+.board-section-wrap { position: relative; overflow: hidden; background: #0f0d0a; min-height: 200px; }
+.board-section-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1200&q=50'); background-size: cover; background-position: center; opacity: 0.12; }
+.board-section-inner { position: relative; z-index: 1; max-width: 940px; margin: 0 auto; padding: 28px 28px 50px; }
+.board-toprow { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+.orders-board { background: rgba(20,15,8,0.88); border: 1px solid #3a2e1a; border-radius: 8px; overflow: hidden; backdrop-filter: blur(4px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+.orders-header { background: linear-gradient(135deg, #2a1f0e, #1c1208); padding: 14px 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid #c8922a44; }
+.orders-header h3 { font-family: 'Playfair Display', serif; color: #f5e6c8; font-size: 16px; }
+.order-count { background: #c8922a; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 20px; }
 
-  .name-chip {
-    background: #2a1f0e; color: #c8b08a;
-    font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 20px;
-    border: 1px solid #3a2e1a; display: flex; align-items: center; gap: 6px;
-  }
-  .chip-note { opacity: 0.6; font-style: italic; font-size: 11px; }
+.group-ticket { border-bottom: 1px solid #2a1f0e; padding: 16px 22px; transition: background 0.15s; }
+.group-ticket:hover { background: rgba(200,146,42,0.04); }
+.group-ticket:last-child { border-bottom: none; }
+.group-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.group-order-text { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; color: #f5e6c8; }
+.group-meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.qty-badge { background: #c8922a; color: #fff; font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 20px; }
+.price-badge { background: #2d6a4f; color: #a8dfc4; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
 
-  .name-chip-edit {
-    background: rgba(200,146,42,0.15); border: 1.5px solid #c8922a; color: #f5e6c8;
-    font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px;
-    display: flex; align-items: center; gap: 6px;
-    animation: pulse-glow 0.5s ease;
-  }
-  @keyframes pulse-glow {
-    0%   { box-shadow: 0 0 0 0 rgba(200,146,42,0.6); }
-    100% { box-shadow: 0 0 0 8px rgba(200,146,42,0); }
-  }
-  .name-chip-edit .ce-name { color: #c8922a; font-weight: 700; }
+.names-row { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.name-chip { background: #2a1f0e; color: #c8b08a; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 20px; border: 1px solid #3a2e1a; display: flex; align-items: center; gap: 5px; }
+.name-chip .nc-qty { font-size: 10px; background: #3a2e1a; padding: 1px 6px; border-radius: 10px; color: #c8922a; font-weight: 700; }
+.chip-note { opacity: 0.6; font-style: italic; font-size: 11px; }
+.name-chip-edit { background: rgba(200,146,42,0.15); border: 1.5px solid #c8922a; color: #f5e6c8; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: flex; align-items: center; gap: 5px; animation: pulse-glow 0.5s ease; }
+@keyframes pulse-glow { 0% { box-shadow: 0 0 0 0 rgba(200,146,42,0.6); } 100% { box-shadow: 0 0 0 8px rgba(200,146,42,0); } }
+.name-chip-edit .ce-name { color: #c8922a; font-weight: 700; }
+.name-chip-edit .nc-qty { font-size: 10px; background: rgba(200,146,42,0.2); padding: 1px 6px; border-radius: 10px; color: #c8922a; font-weight: 700; }
 
-  .join-btn {
-    background: transparent; border: 1px solid #c8922a44; color: #c8922a;
-    font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 4px 14px;
-    border-radius: 20px; cursor: pointer; text-transform: uppercase; transition: all 0.15s;
-  }
-  .join-btn:hover { background: #c8922a; color: #fff; border-color: #c8922a; }
+.join-btn { background: transparent; border: 1px solid #c8922a55; color: #c8922a; font-size: 11px; font-weight: 700; letter-spacing: 1px; padding: 3px 12px; border-radius: 20px; cursor: pointer; text-transform: uppercase; transition: all 0.15s; }
+.join-btn:hover { background: #c8922a; color: #fff; }
 
-  .empty-state {
-    padding: 56px 20px; text-align: center; color: #4a3a1a;
-    font-size: 14px; letter-spacing: 1px;
-  }
-  .empty-state .eicon { font-size: 40px; margin-bottom: 12px; opacity: 0.5; }
+/* Delivery summary footer */
+.delivery-footer { margin-top: 16px; background: rgba(200,146,42,0.08); border: 1px solid #c8922a33; border-radius: 6px; padding: 12px 18px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.df-item { font-size: 12px; color: #c8a97a; font-family: 'Inter', sans-serif; }
+.df-item span { font-weight: 700; color: #e8c87a; }
+.df-hidden { display: none; }
 
-  .last-updated { font-size: 11px; color: #5a4a2a; }
-  .btn-clear {
-    padding: 8px 18px; background: #c0392b; color: #fff; border: none; border-radius: 4px;
-    font-size: 11px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; cursor: pointer;
-    transition: background 0.15s;
-  }
-  .btn-clear:hover { background: #922b21; }
+.empty-state { padding: 50px 20px; text-align: center; color: #4a3a1a; font-size: 14px; }
+.empty-state .eicon { font-size: 38px; margin-bottom: 10px; opacity: 0.5; }
+.last-updated { font-size: 11px; color: #5a4a2a; }
+.btn-clear { padding: 7px 16px; background: #c0392b; color: #fff; border: none; border-radius: 4px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; cursor: pointer; }
+.btn-clear:hover { background: #922b21; }
 
-  /* Toast */
-  .toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
-    background: #1c1208; color: #f5e6c8; padding: 12px 24px; border-radius: 4px;
-    font-size: 13px; border-left: 3px solid #c8922a;
-    transition: transform 0.3s ease; z-index: 999; white-space: nowrap;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+/* ─── ADMIN TAB ─────────────────────────────────────────────────── */
+.admin-section { background: #0f1a14; min-height: 400px; }
+.admin-inner { max-width: 940px; margin: 0 auto; padding: 28px 28px 50px; }
 
-  @media(max-width:560px){
-    .hero h1 { font-size: 36px; }
-    .menu-section-inner, .order-section-inner, .board-section-inner { padding: 22px 16px; }
-    .group-ticket { padding: 14px 16px; }
-    .orders-header { padding: 12px 16px; }
-  }
+.admin-heading { font-family: 'Playfair Display', serif; font-size: 22px; color: #5BAD8F; margin-bottom: 6px; }
+.admin-sub { font-size: 12px; color: #4a7a5a; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 24px; }
+
+/* Lock toggle */
+.lock-row { display: flex; align-items: center; gap: 14px; background: #1a2e20; border: 1px solid #2d6a4f44; border-radius: 8px; padding: 14px 18px; margin-bottom: 28px; }
+.lock-row .lr-text { flex: 1; }
+.lock-row .lr-title { font-size: 13px; font-weight: 700; color: #a8dfc4; margin-bottom: 2px; }
+.lock-row .lr-desc { font-size: 11px; color: #4a7a5a; }
+.toggle-wrap { display: flex; align-items: center; gap: 8px; }
+.toggle-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.toggle-label.on  { color: #e74c3c; }
+.toggle-label.off { color: #5BAD8F; }
+.toggle { position: relative; width: 48px; height: 26px; cursor: pointer; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; inset: 0; background: #2d6a4f; border-radius: 13px; transition: background 0.3s; }
+.toggle-slider::before { content: ''; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; background: white; border-radius: 50%; transition: transform 0.3s; }
+.toggle input:checked + .toggle-slider { background: #e74c3c; }
+.toggle input:checked + .toggle-slider::before { transform: translateX(22px); }
+
+/* Delivery fee row */
+.delivery-row { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+.delivery-row label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #4a7a5a; font-weight: 600; white-space: nowrap; }
+.delivery-input { padding: 9px 14px; border: 1px solid #2d4a38; border-radius: 4px; font-size: 14px; font-family: inherit; background: #1a2e20; color: #a8dfc4; outline: none; width: 120px; transition: border-color 0.2s; }
+.delivery-input:focus { border-color: #5BAD8F; }
+.delivery-suffix { font-size: 13px; color: #4a7a5a; font-weight: 600; }
+
+/* Restaurant cards */
+.rest-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
+.rest-card { background: #1a2e20; border: 1px solid #2d4a38; border-radius: 8px; overflow: hidden; }
+.rest-card-header { padding: 14px 18px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: background 0.15s; }
+.rest-card-header:hover { background: #243d2a; }
+.rest-card-header.active-rest { background: #2d6a4f; }
+.rch-name { flex: 1; font-family: 'Playfair Display', serif; font-size: 17px; color: #f5e6c8; }
+.rch-badge { font-size: 10px; background: #5BAD8F22; color: #5BAD8F; border: 1px solid #5BAD8F44; border-radius: 20px; padding: 2px 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+.rch-badge.is-active { background: #5BAD8F; color: #0f1a14; }
+.rch-del { cursor: pointer; color: #3a5a44; font-size: 16px; transition: color 0.15s; padding: 4px; }
+.rch-del:hover { color: #e74c3c; }
+
+.rest-body { padding: 16px 18px; border-top: 1px solid #2d4a38; }
+.rest-body-title { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: #4a7a5a; font-weight: 700; margin-bottom: 10px; }
+.rest-items { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.rest-item-chip { display: flex; align-items: center; gap: 8px; background: #243d2a; border: 1px solid #2d4a38; border-radius: 6px; padding: 6px 12px; }
+.ric-name { font-size: 13px; font-weight: 600; color: #a8dfc4; font-family: 'Playfair Display', serif; }
+.ric-price { font-size: 11px; color: #5BAD8F; font-weight: 600; }
+.ric-del { cursor: pointer; color: #3a5a44; font-size: 14px; margin-left: 4px; transition: color 0.15s; }
+.ric-del:hover { color: #e74c3c; }
+
+/* Inline editable item rows */
+.rest-items-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 4px; }
+.rest-item-row { display: flex; align-items: center; gap: 8px; background: #1a2e20; border: 1px solid #2d4a38; border-radius: 6px; padding: 6px 10px; transition: border-color 0.15s; }
+.rest-item-row:hover { border-color: #3a6a50; }
+.rir-name { flex: 1; background: transparent; border: none; border-bottom: 1px dashed #3a5a44; color: #a8dfc4; font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; outline: none; padding: 3px 4px; transition: border-color 0.15s, background 0.3s; min-width: 100px; }
+.rir-name:focus { border-bottom-color: #5BAD8F; background: rgba(91,173,143,0.08); border-radius: 3px; }
+.rir-price-wrap { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.rir-price { width: 80px; background: transparent; border: none; border-bottom: 1px dashed #3a5a44; color: #5BAD8F; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700; outline: none; padding: 3px 4px; text-align: right; transition: border-color 0.15s, background 0.3s; }
+.rir-price:focus { border-bottom-color: #5BAD8F; background: rgba(91,173,143,0.08); border-radius: 3px; }
+.rir-jd { font-size: 11px; color: #4a7a5a; font-weight: 600; flex-shrink: 0; }
+.add-item-row { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
+.ai-field { display: flex; flex-direction: column; gap: 4px; }
+.ai-field label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #4a7a5a; font-weight: 600; }
+.ai-input { padding: 8px 12px; border: 1px solid #2d4a38; border-radius: 4px; font-size: 13px; font-family: inherit; background: #1a2e20; color: #a8dfc4; outline: none; }
+.ai-input:focus { border-color: #5BAD8F; }
+.btn-admin { padding: 9px 18px; border: none; border-radius: 4px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; cursor: pointer; font-family: inherit; }
+.btn-green  { background: #5BAD8F; color: #0f1a14; } .btn-green:hover  { background: #4d9a7d; }
+.btn-amber  { background: #c8922a; color: #fff; }     .btn-amber:hover  { background: #a07218; }
+.btn-activate { font-size: 11px; background: #2d6a4f; color: #a8dfc4; border: 1px solid #3a8a64; border-radius: 4px; padding: 5px 12px; cursor: pointer; font-family: inherit; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+.btn-activate:hover { background: #3a8a64; color: #fff; }
+.btn-activate.deactivate { background: #1a3a28; color: #5a8a6a; border-color: #2d4a38; }
+.btn-activate.deactivate:hover { background: #c0392b22; border-color: #c0392b44; color: #e74c3c; }
+
+.add-rest-row { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 8px; }
+.ar-input { padding: 10px 14px; border: 1px solid #2d4a38; border-radius: 4px; font-size: 15px; font-family: 'Playfair Display', serif; background: #1a2e20; color: #f5e6c8; outline: none; flex: 1; }
+.ar-input:focus { border-color: #5BAD8F; }
+.ar-input::placeholder { color: #3a5a44; }
+
+/* Toast */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1c1208; color: #f5e6c8; padding: 12px 24px; border-radius: 4px; font-size: 13px; border-left: 3px solid #c8922a; transition: transform 0.3s ease; z-index: 999; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+@media(max-width:560px) {
+  .hero h1 { font-size: 34px; }
+  .menu-section-inner, .order-section-inner, .board-section-inner, .admin-inner { padding: 20px 14px; }
+  .group-ticket, .orders-header { padding: 12px 14px; }
+}
 </style>
 </head>
 <body>
 
-<!-- ══ HERO HEADER ══════════════════════════════════════════════════════════ -->
+<!-- ══ HERO ═══════════════════════════════════════════════════════════ -->
 <div class="hero">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
@@ -340,452 +272,894 @@
     <h1>SAM Kitchen</h1>
     <p class="hero-sub">Team Lunch Orders</p>
   </div>
-  <div class="hero-divider"><span>✦</span></div>
-</div>
-<div class="nav-strip">
-  <span>Menu</span><span>Order</span><span>Join</span><span>Eat</span>
-</div>
-
-<!-- ══ SECTION 1: MENU ══════════════════════════════════════════════════════ -->
-<div class="menu-section">
-  <div class="menu-section-bg"></div>
-  <div class="menu-section-inner">
-    <div class="section-heading">
-      <div class="sh-line"></div>
-      <span class="sh-icon">🍽</span>
-      <span class="sh-text">Today's Menu</span>
-      <span class="sh-icon">🍽</span>
-      <div class="sh-line"></div>
-    </div>
-    <div class="menu-add-row">
-      <div class="field">
-        <label>Emoji</label>
-        <input class="emoji-input" type="text" id="menuEmoji" placeholder="🍕" maxlength="4" />
-      </div>
-      <div class="field" style="flex:1;min-width:180px;">
-        <label>Food name</label>
-        <input type="text" id="menuName" placeholder="e.g. Grilled Chicken" maxlength="60"
-          onkeydown="if(event.key==='Enter')addMenuItem()" />
-      </div>
-      <button class="btn-add-menu" onclick="addMenuItem()">+ Add Item</button>
-    </div>
-    <div class="menu-chips-row" id="menuChips">
-      <span class="menu-empty">No items yet — add the first one above</span>
-    </div>
+  <div class="tagline-strip">
+    <div class="tl-line"></div>
+    <span class="tl-text">Let's enjoy today's meal</span>
+    <div class="tl-line"></div>
   </div>
 </div>
 
-<!-- ══ SECTION 2: PLACE ORDER ═══════════════════════════════════════════════ -->
-<div class="order-section-wrap">
-  <div class="order-section-bg"></div>
-  <div class="order-section-inner">
-    <div class="section-heading" style="--line-color:#e2cfa8;">
-      <div class="sh-line" style="background:#e2cfa844;"></div>
-      <span class="sh-icon" style="color:#c8922a;">✦</span>
-      <span class="sh-text" style="color:#1a1208;font-size:18px;">Place Your Order</span>
-      <span class="sh-icon" style="color:#c8922a;">✦</span>
-      <div class="sh-line" style="background:#e2cfa844;"></div>
-    </div>
+<!-- ══ TABS ════════════════════════════════════════════════════════════ -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('main')">🍽 Today's Order</button>
+  <button class="tab-btn admin-tab" id="adminTabBtn" style="display:none;" onclick="switchTab('admin')">⚙️ Admin</button>
+</div>
 
-    <div class="order-card">
-      <div class="order-card-accent"></div>
-      <div class="order-form-row">
+<!-- ══════════════ MAIN TAB ══════════════════════════════════════════ -->
+<div class="tab-panel active" id="tab-main">
 
-        <!-- Name -->
-        <div class="form-block">
-          <label>Your name</label>
-          <input type="text" id="nameInput" placeholder="Enter your name..." maxlength="40" autocomplete="off" />
-          <div class="edit-hint" id="editHint">✏️ You have an order — pick a new meal to replace, or delete</div>
+  <!-- MENU SECTION -->
+  <div class="menu-section">
+    <div class="menu-section-bg"></div>
+    <div class="menu-section-inner">
+      <div class="restaurant-name-wrap">
+        <input class="restaurant-name-input" id="restaurantNameInput" type="text" placeholder="Restaurant Name" maxlength="60" spellcheck="false" />
+        <div class="restaurant-name-hint" id="rnHint">✎ Click to enter restaurant name</div>
+      </div>
+
+      <div class="section-heading">
+        <div class="sh-line"></div><span class="sh-icon">✦</span>
+        <span class="sh-text">Today's Menu</span>
+        <span class="sh-icon">✦</span><div class="sh-line"></div>
+      </div>
+
+      <div class="menu-picture-area" style="display:flex;flex-direction:column;align-items:center;">
+        <div class="menu-picture-frame">
+          <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=900&q=80" alt="Menu" draggable="false" />
+          <div class="menu-pic-label">Today's Selection</div>
         </div>
+      </div>
 
-        <!-- Meal picker -->
-        <div class="form-block">
-          <label>Choose your meal</label>
-          <div class="food-grid" id="foodGrid">
-            <div class="no-menu-msg">Add items to the menu above first</div>
+      <div id="lockBanner" class="lock-banner" style="display:none;">
+        <span class="lb-icon">🔒</span>
+        <span>Menu is managed by admin — only admins can edit the menu</span>
+      </div>
+
+      <div id="mainMenuEditor">
+        <div class="menu-add-row">
+          <div class="field" style="flex:1;min-width:160px;">
+            <label>Food name</label>
+            <input type="text" id="menuName" placeholder="e.g. Grilled Chicken" maxlength="60" onkeydown="if(event.key==='Enter')addMainMenuItem()" />
           </div>
-        </div>
-
-        <!-- Notes + actions -->
-        <div class="form-block">
-          <label>Notes (optional)</label>
-          <textarea id="orderNotes" placeholder="No onions, extra sauce..."></textarea>
-          <div style="margin-top:12px;display:flex;flex-direction:column;gap:6px;">
-            <button class="btn-submit" id="submitBtn" onclick="submitOrder()">Add to Board</button>
-            <button class="btn-submit btn-replace" id="replaceBtn" onclick="replaceOrder()" style="display:none;">Replace My Order</button>
-            <button class="btn-submit btn-delete"  id="deleteBtn"  onclick="deleteMyOrder()" style="display:none;">Delete My Order</button>
+          <div class="field" style="width:110px;">
+            <label>Price (JD)</label>
+            <input type="number" id="menuPrice" placeholder="0.000" min="0" step="0.001" style="width:110px;" />
           </div>
+          <button class="btn-add-menu" onclick="addMainMenuItem()">+ Add Item</button>
         </div>
+      </div>
 
+      <div class="menu-chips-row" id="menuChips">
+        <span class="menu-empty">No items yet</span>
       </div>
     </div>
   </div>
-</div>
 
-<!-- ══ SECTION 3: ORDER BOARD ═══════════════════════════════════════════════ -->
-<div class="board-section-wrap">
-  <div class="board-section-bg"></div>
-  <div class="board-section-inner">
-
-    <div class="board-toprow">
-      <div class="section-heading" style="flex:1;margin-bottom:0;">
-        <div class="sh-line"></div>
-        <span class="sh-icon">🥘</span>
-        <span class="sh-text">Order Board</span>
-        <span class="sh-icon">🥘</span>
-        <div class="sh-line"></div>
+  <!-- ORDER SECTION -->
+  <div class="order-section-wrap">
+    <div class="order-section-bg"></div>
+    <div class="order-section-inner">
+      <div class="section-heading">
+        <div class="sh-line" style="background:#e2cfa844;"></div>
+        <span class="sh-icon">✦</span>
+        <span class="sh-text sh-text-dark">Place Your Order</span>
+        <span class="sh-icon">✦</span>
+        <div class="sh-line" style="background:#e2cfa844;"></div>
       </div>
-      <div style="display:flex;gap:10px;align-items:center;">
-        <span class="last-updated" id="lastUpdated"></span>
-        <!-- Clear All: only rendered for admins -->
-        <button class="btn-clear" id="clearBtn" onclick="clearOrders()" style="display:none;">Clear All</button>
+
+      <div id="ordersLockBanner" style="display:none; background:#2a0e0e; border:1px solid #c0392b44; border-radius:6px; padding:10px 18px; margin-bottom:16px; display:none; align-items:center; gap:10px; font-size:13px; color:#e87a7a; font-family:'Inter',sans-serif;">
+        <span style="font-size:18px;">🚫</span>
+        <span>Ordering is currently closed by admin — the board is read-only</span>
+      </div>
+
+      <div class="order-card" id="orderCardWrap">
+        <div class="order-card-accent"></div>
+        <div class="order-form-row">
+
+          <!-- Name -->
+          <div class="form-block">
+            <label>Your name</label>
+            <input type="text" id="nameInput" placeholder="Enter your name..." maxlength="40" autocomplete="off" />
+            <div class="edit-hint" id="editHint">✏️ You have an order — pick a new meal to replace, or delete</div>
+          </div>
+
+          <!-- Meal + Qty -->
+          <div class="form-block">
+            <label>Choose your meal</label>
+            <div class="food-grid" id="foodGrid">
+              <div class="no-menu-msg">Add items to the menu first</div>
+            </div>
+            <div class="qty-selector" id="qtySelectorWrap" style="display:none;">
+              <label>Quantity</label>
+              <div class="qty-control">
+                <button class="qty-btn" onclick="changeQty(-1)">−</button>
+                <div class="qty-display" id="qtyDisplay">1</div>
+                <button class="qty-btn" onclick="changeQty(1)">+</button>
+              </div>
+            </div>
+            <div class="price-summary" id="priceSummary">
+              <div class="ps-row"><span>Meal</span><span class="ps-val" id="psMeal">—</span></div>
+              <div class="ps-row"><span>Delivery share</span><span class="ps-val" id="psDelivery">—</span></div>
+              <div class="ps-row"><span>Your total</span><span class="ps-val" id="psTotal">—</span></div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="form-block">
+            <label>Action</label>
+            <div style="display:flex;flex-direction:column;gap:6px;margin-top:2px;">
+              <button class="btn-submit" id="submitBtn" onclick="submitOrder()">Add to Board</button>
+              <button class="btn-submit btn-replace" id="replaceBtn" onclick="replaceOrder()" style="display:none;">Replace My Order</button>
+              <button class="btn-submit btn-delete"  id="deleteBtn"  onclick="deleteMyOrder()" style="display:none;">Delete My Order</button>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
-
-    <div class="orders-board">
-      <div class="orders-header">
-        <h3>Today's Orders</h3>
-        <span class="order-count" id="orderCount">0 items</span>
-      </div>
-      <div id="ordersList">
-        <div class="empty-state"><div class="eicon">🍴</div>No orders yet — be the first!</div>
-      </div>
-    </div>
-
   </div>
-</div>
+
+  <!-- ORDER BOARD -->
+  <div class="board-section-wrap">
+    <div class="board-section-bg"></div>
+    <div class="board-section-inner">
+      <div class="board-toprow">
+        <div class="section-heading" style="flex:1;margin-bottom:0;">
+          <div class="sh-line"></div><span class="sh-icon">🥘</span>
+          <span class="sh-text">Order Board</span>
+          <span class="sh-icon">🥘</span><div class="sh-line"></div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span class="last-updated" id="lastUpdated"></span>
+          <button class="btn-clear" id="clearBtn" onclick="clearOrders()" style="display:none;">Clear All</button>
+        </div>
+      </div>
+      <div class="orders-board">
+        <div class="orders-header">
+          <h3>Today's Orders</h3>
+          <span class="order-count" id="orderCount">0 items</span>
+        </div>
+        <div id="ordersList">
+          <div class="empty-state"><div class="eicon">🍴</div>No orders yet — be the first!</div>
+        </div>
+      </div>
+      <div class="delivery-footer df-hidden" id="deliveryFooter">
+        <div class="df-item">Total orders: <span id="dfTotal">0</span></div>
+        <div class="df-item">Delivery fee: <span id="dfFee">—</span></div>
+        <div class="df-item">Per person: <span id="dfPer">—</span></div>
+        <div class="df-item">Food total: <span id="dfFood">—</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end tab-main -->
+
+<!-- ══════════════ ADMIN TAB ══════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-admin">
+  <div class="admin-section">
+    <div class="admin-inner">
+      <h2 class="admin-heading">Admin Panel</h2>
+      <p class="admin-sub">Restaurant database & menu control</p>
+
+      <!-- Lock toggle -->
+      <div class="lock-row">
+        <div class="lr-text">
+          <div class="lr-title">🔒 Lock Main Menu</div>
+          <div class="lr-desc">When ON — only admins can edit the menu on the main tab</div>
+        </div>
+        <div class="toggle-wrap">
+          <span class="toggle-label off" id="lockLabelOff">Open</span>
+          <label class="toggle">
+            <input type="checkbox" id="lockToggle" onchange="saveLockState()" />
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label on" id="lockLabelOn">Locked</span>
+        </div>
+      </div>
+
+      <!-- Orders lock toggle -->
+      <div class="lock-row" style="margin-top:12px;">
+        <div class="lr-text">
+          <div class="lr-title">🚫 Lock Ordering</div>
+          <div class="lr-desc">When ON — nobody can add, replace, or join orders (board becomes read-only)</div>
+        </div>
+        <div class="toggle-wrap">
+          <span class="toggle-label off">Open</span>
+          <label class="toggle">
+            <input type="checkbox" id="ordersLockToggle" onchange="saveOrdersLockState()" />
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="toggle-label on">Locked</span>
+        </div>
+      </div>
+
+      <!-- Delivery fee -->
+      <div class="delivery-row" style="margin-top:20px;">
+        <label>Delivery Fee</label>
+        <input class="delivery-input" type="number" id="deliveryFeeInput" placeholder="0.000" min="0" step="0.001" />
+        <span class="delivery-suffix">JD</span>
+        <button class="btn-admin btn-green" style="padding:9px 16px;" onclick="saveDeliveryFee()">Save</button>
+      </div>
+
+      <!-- Restaurant list -->
+      <div class="section-heading" style="margin-bottom:16px;">
+        <div class="sh-line"></div><span class="sh-icon" style="color:#5BAD8F;">🍴</span>
+        <span class="sh-text" style="color:#a8dfc4;">Restaurants</span>
+        <span class="sh-icon" style="color:#5BAD8F;">🍴</span><div class="sh-line"></div>
+      </div>
+
+      <div class="rest-list" id="restList">
+        <p style="color:#3a5a44;font-size:13px;font-style:italic;">No restaurants yet — add one below</p>
+      </div>
+
+      <div class="add-rest-row">
+        <input class="ar-input" type="text" id="newRestName" placeholder="Restaurant name..." maxlength="60" onkeydown="if(event.key==='Enter')addRestaurant()" />
+        <button class="btn-admin btn-green" onclick="addRestaurant()">+ Add Restaurant</button>
+      </div>
+
+    </div>
+  </div>
+</div><!-- end tab-admin -->
 
 <div class="toast" id="toast"></div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, push, remove, set, onValue, get }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push, remove, set, onValue, get, update }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  const app = initializeApp({
-    databaseURL: "https://sam-kitchen-31c81-default-rtdb.europe-west1.firebasedatabase.app"
+const app = initializeApp({
+  databaseURL: "https://sam-kitchen-31c81-default-rtdb.europe-west1.firebasedatabase.app"
+});
+const db = getDatabase(app);
+
+// Firebase refs
+const ordersRef      = ref(db, 'orders');
+const menuRef        = ref(db, 'menu');
+const settingsRef    = ref(db, 'settings');
+const restaurantsRef = ref(db, 'restaurants');
+
+const ADMINS = ['affaneh0', 'aws0', 'waleed0'];
+function isAdmin(n) { return ADMINS.includes((n||'').trim().toLowerCase()); }
+
+let lastOrders = [], lastMenu = [], lastSettings = {}, lastRestaurants = {};
+let selectedFood = null, currentQty = 1;
+
+// ── Toast ──────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── Tabs ───────────────────────────────────────────────────────────────
+window.switchTab = function(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + tab + "'")) b.classList.add('active');
   });
-  const db        = getDatabase(app);
-  const ordersRef = ref(db, 'orders');
-  const menuRef   = ref(db, 'menu');
+};
 
-  // ── Admins: case-insensitive match ────────────────────────────────────────
-  const ADMINS = ['affaneh', 'aws', 'waleed'];
-  function isAdmin(name) { return ADMINS.includes((name || '').trim().toLowerCase()); }
+// ── Name field ─────────────────────────────────────────────────────────
+function getTypedName() { return document.getElementById('nameInput').value.trim(); }
+function findMyOrder(name) {
+  if (!name) return null;
+  return lastOrders.find(o => o.name.toLowerCase() === name.toLowerCase()) || null;
+}
 
-  let lastOrders   = [];
-  let lastMenu     = [];
-  let selectedFood = null;
+document.getElementById('nameInput').addEventListener('input', () => {
+  const name = getTypedName();
+  document.getElementById('adminTabBtn').style.display = isAdmin(name) ? 'flex' : 'none';
+  applyLockUI(!!lastSettings.menuLocked);
+  applyOrdersLockUI(!!lastSettings.ordersLocked);
+  updateFormMode();
+});
 
-  // ── Helpers ───────────────────────────────────────────────────────────────
+function updateFormMode() {
+  const name = getTypedName();
+  const myOrder = findMyOrder(name);
+  document.getElementById('submitBtn').style.display  = myOrder ? 'none'  : 'block';
+  document.getElementById('replaceBtn').style.display = myOrder ? 'block' : 'none';
+  document.getElementById('deleteBtn').style.display  = myOrder ? 'block' : 'none';
+  document.getElementById('editHint').style.display   = myOrder ? 'block' : 'none';
+  document.getElementById('clearBtn').style.display   = isAdmin(name) ? 'block' : 'none';
+  updatePriceSummary();
+  renderOrders(lastOrders);
+}
 
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2800);
+// ── Qty ────────────────────────────────────────────────────────────────
+window.changeQty = function(delta) {
+  currentQty = Math.max(1, currentQty + delta);
+  document.getElementById('qtyDisplay').textContent = currentQty;
+  updatePriceSummary();
+};
+
+function updatePriceSummary() {
+  const ps = document.getElementById('priceSummary');
+  if (!selectedFood) { ps.classList.remove('visible'); return; }
+
+  const deliveryFee = parseFloat(lastSettings.deliveryFee || 0);
+  const peopleCount = countUniquePeople();
+  const mealTotal   = selectedFood.price ? selectedFood.price * currentQty : null;
+  const deliverySplit = (deliveryFee > 0 && peopleCount >= 0)
+    ? deliveryFee / (peopleCount + 1) : null;  // +1 = current person not yet added
+
+  const hasPricing = mealTotal !== null || deliverySplit !== null;
+  if (!hasPricing) { ps.classList.remove('visible'); return; }
+
+  ps.classList.add('visible');
+  document.getElementById('psMeal').textContent     = mealTotal !== null ? mealTotal.toFixed(3) + ' JD' : '—';
+  document.getElementById('psDelivery').textContent = deliverySplit !== null ? deliverySplit.toFixed(3) + ' JD' : '—';
+  const total = (mealTotal || 0) + (deliverySplit || 0);
+  document.getElementById('psTotal').textContent    = hasPricing ? total.toFixed(3) + ' JD' : '—';
+}
+
+function countUniquePeople() {
+  const seen = new Set();
+  lastOrders.forEach(o => seen.add(o.name.toLowerCase()));
+  return seen.size;
+}
+
+// ── Restaurant name ────────────────────────────────────────────────────
+const rnInput = document.getElementById('restaurantNameInput');
+let rnTimer = null;
+rnInput.addEventListener('input', () => {
+  clearTimeout(rnTimer);
+  rnTimer = setTimeout(() => set(ref(db,'settings/restaurantName'), rnInput.value.trim()), 800);
+});
+
+// ── Lock state ─────────────────────────────────────────────────────────
+window.saveLockState = function() {
+  const locked = document.getElementById('lockToggle').checked;
+  set(ref(db,'settings/menuLocked'), locked);
+};
+
+window.saveOrdersLockState = function() {
+  const locked = document.getElementById('ordersLockToggle').checked;
+  set(ref(db,'settings/ordersLocked'), locked);
+};
+
+function applyOrdersLockUI(locked) {
+  const banner   = document.getElementById('ordersLockBanner');
+  const foodGrid = document.getElementById('foodGrid');
+  const qtyWrap  = document.getElementById('qtySelectorWrap');
+  const submitBtn  = document.getElementById('submitBtn');
+  const replaceBtn = document.getElementById('replaceBtn');
+  const isAdminUser = isAdmin(getTypedName());
+
+  if (locked && !isAdminUser) {
+    banner.style.display     = 'flex';
+    foodGrid.style.opacity   = '0.35';
+    foodGrid.style.pointerEvents = 'none';
+    if (qtyWrap) { qtyWrap.style.opacity = '0.35'; qtyWrap.style.pointerEvents = 'none'; }
+    if (submitBtn)  submitBtn.style.display  = 'none';
+    if (replaceBtn) replaceBtn.style.display = 'none';
+  } else {
+    banner.style.display     = 'none';
+    foodGrid.style.opacity   = '';
+    foodGrid.style.pointerEvents = '';
+    if (qtyWrap) { qtyWrap.style.opacity = ''; qtyWrap.style.pointerEvents = ''; }
+    // restore buttons via updateFormMode
+    updateFormMode();
   }
+  const toggle = document.getElementById('ordersLockToggle');
+  if (toggle) toggle.checked = locked;
+}
 
-  function esc(s) {
-    return String(s)
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+function applyLockUI(locked) {
+  const editor    = document.getElementById('mainMenuEditor');
+  const banner    = document.getElementById('lockBanner');
+  const nameInput = document.getElementById('nameInput');
+  const isAdminUser = isAdmin(nameInput.value.trim());
+
+  if (locked && !isAdminUser) {
+    editor.style.display = 'none';
+    banner.style.display = 'flex';
+  } else {
+    editor.style.display = 'block';
+    banner.style.display = 'none';
   }
+  document.getElementById('lockToggle').checked = locked;
+}
 
-  function getTypedName() { return document.getElementById('nameInput').value.trim(); }
+// ── Delivery fee ───────────────────────────────────────────────────────
+window.saveDeliveryFee = function() {
+  const val = parseFloat(document.getElementById('deliveryFeeInput').value) || 0;
+  set(ref(db,'settings/deliveryFee'), val);
+  showToast('✓ Delivery fee saved: ' + val.toFixed(3) + ' JD');
+};
 
-  function findMyOrder(name) {
-    if (!name) return null;
-    return lastOrders.find(o => o.name.toLowerCase() === name.toLowerCase()) || null;
-  }
+// ── Main menu (direct edit) ────────────────────────────────────────────
+window.addMainMenuItem = async function() {
+  const name  = document.getElementById('menuName').value.trim();
+  const price = parseFloat(document.getElementById('menuPrice').value) || null;
+  if (!name) { showToast('Enter a food name'); return; }
+  if (lastMenu.find(m => m.name.toLowerCase() === name.toLowerCase())) { showToast('Already on the menu!'); return; }
+  const item = { name };
+  if (price) item.price = price;
+  await push(menuRef, item);
+  document.getElementById('menuName').value  = '';
+  document.getElementById('menuPrice').value = '';
+  showToast('✓ Added: ' + name);
+};
 
-  // ── Form mode: add vs edit ────────────────────────────────────────────────
+window.deleteMainMenuItem = async function(key) {
+  await remove(ref(db, 'menu/' + key));
+  if (selectedFood && selectedFood.key === key) { selectedFood = null; currentQty = 1; }
+  showToast('Removed from menu');
+};
 
-  function updateFormMode() {
-    const name    = getTypedName();
-    const myOrder = findMyOrder(name);
-
-    document.getElementById('submitBtn').style.display  = myOrder ? 'none'  : 'block';
-    document.getElementById('replaceBtn').style.display = myOrder ? 'block' : 'none';
-    document.getElementById('deleteBtn').style.display  = myOrder ? 'block' : 'none';
-    document.getElementById('editHint').style.display   = myOrder ? 'block' : 'none';
-
-    // Show/hide Clear All for admins
-    document.getElementById('clearBtn').style.display = isAdmin(name) ? 'block' : 'none';
-
-    renderOrders(lastOrders);
-  }
-
-  document.getElementById('nameInput').addEventListener('input', updateFormMode);
-
-  // ── Menu ──────────────────────────────────────────────────────────────────
-
-  window.addMenuItem = async function() {
-    const emoji = document.getElementById('menuEmoji').value.trim() || '🍽';
-    const name  = document.getElementById('menuName').value.trim();
-    if (!name) { showToast('Enter a food name'); return; }
-    if (lastMenu.find(m => m.name.toLowerCase() === name.toLowerCase())) {
-      showToast('Already on the menu!'); return;
-    }
-    await push(menuRef, { emoji, name });
-    document.getElementById('menuEmoji').value = '';
-    document.getElementById('menuName').value  = '';
-    showToast('✓ Added: ' + name);
-  };
-
-  window.deleteMenuItem = async function(key) {
-    await remove(ref(db, 'menu/' + key));
-    if (selectedFood && selectedFood.key === key) selectedFood = null;
-    showToast('Removed from menu');
-  };
-
-  function renderMenu(menu) {
-    lastMenu = menu;
-
-    const chipsEl = document.getElementById('menuChips');
-    if (!menu.length) {
-      chipsEl.innerHTML = '<span class="menu-empty">No items yet — add the first one above</span>';
-    } else {
-      chipsEl.innerHTML = menu.map(m => `
-        <div class="menu-chip">
-          <span class="mc-emoji">${esc(m.emoji)}</span>
-          <span class="mc-name">${esc(m.name)}</span>
-          <span class="mc-del" data-key="${esc(m.key)}" title="Remove">✕</span>
-        </div>`).join('');
-      chipsEl.querySelectorAll('.mc-del').forEach(el =>
-        el.addEventListener('click', () => deleteMenuItem(el.dataset.key))
-      );
-    }
-
-    const grid = document.getElementById('foodGrid');
-    if (!menu.length) {
-      grid.innerHTML = '<div class="no-menu-msg">Add items to the menu above first</div>';
-      return;
-    }
-    grid.innerHTML = menu.map(m => {
-      const isSel = selectedFood && selectedFood.key === m.key;
-      return `<div class="food-tile ${isSel ? 'selected' : ''}" data-key="${esc(m.key)}">
-        <span class="tile-emoji">${esc(m.emoji)}</span>
-        <span class="tile-name">${esc(m.name)}</span>
-      </div>`;
-    }).join('');
-    grid.querySelectorAll('.food-tile').forEach(tile => {
-      tile.addEventListener('click', () => {
-        selectedFood = menu.find(m => m.key === tile.dataset.key) || null;
-        grid.querySelectorAll('.food-tile').forEach(t => t.classList.remove('selected'));
-        tile.classList.add('selected');
-      });
-    });
-  }
-
-  // ── Orders ────────────────────────────────────────────────────────────────
-
-  function groupOrders(orders) {
-    const groups = [];
-    orders.forEach(o => {
-      const existing = groups.find(g => g.foodKey === o.foodKey);
-      if (existing) {
-        if (!existing.names.find(n => n.name === o.name))
-          existing.names.push({ name: o.name, firebaseKey: o.firebaseKey, note: o.notes || '' });
-      } else {
-        groups.push({
-          foodKey: o.foodKey, foodName: o.foodName, foodEmoji: o.foodEmoji,
-          firstTs: o.ts,
-          names: [{ name: o.name, firebaseKey: o.firebaseKey, note: o.notes || '' }]
-        });
-      }
-    });
-    groups.sort((a,b) => a.firstTs - b.firstTs);
-    return groups;
-  }
-
-  function renderOrders(orders) {
-    lastOrders = orders;
-    const typedName = getTypedName().toLowerCase();
-    const list      = document.getElementById('ordersList');
-    const countEl   = document.getElementById('orderCount');
-
-    if (!orders.length) {
-      countEl.textContent = '0 items';
-      list.innerHTML = '<div class="empty-state"><div class="eicon">🍴</div>No orders yet — be the first!</div>';
-      return;
-    }
-
-    const groups = groupOrders(orders);
-    countEl.textContent = groups.length + ' dish' + (groups.length !== 1 ? 'es' : '') + ' · ' + orders.length + ' total';
-
-    list.innerHTML = groups.map(g => {
-      const chips = g.names.map(n => {
-        const isMe = typedName && n.name.toLowerCase() === typedName;
-        if (isMe) return `<span class="name-chip-edit">
-          <span class="ce-name">${esc(n.name)}</span>
-          ${n.note ? `<span class="chip-note">(${esc(n.note)})</span>` : ''}
-        </span>`;
-        return `<span class="name-chip">
-          ${esc(n.name)}
-          ${n.note ? `<span class="chip-note">(${esc(n.note)})</span>` : ''}
-        </span>`;
-      }).join('');
-
-      const alreadyIn = typedName && g.names.find(n => n.name.toLowerCase() === typedName);
-      const joinBtn = !alreadyIn
-        ? `<button class="join-btn" data-foodkey="${esc(g.foodKey)}">+ Join</button>`
-        : '';
-
-      return `
-        <div class="group-ticket">
-          <div class="group-top">
-            <div class="group-order-text">
-              <span class="group-emoji">${esc(g.foodEmoji)}</span>${esc(g.foodName)}
-            </div>
-            <span class="qty-badge">× ${g.names.length}</span>
-          </div>
-          <div class="names-row">${chips}${joinBtn}</div>
-        </div>`;
-    }).join('');
-
-    list.querySelectorAll('.join-btn').forEach(btn =>
-      btn.addEventListener('click', () => joinOrder(btn.dataset.foodkey))
+function renderMenu(menu) {
+  lastMenu = menu;
+  const chipsEl = document.getElementById('menuChips');
+  if (!menu.length) {
+    chipsEl.innerHTML = '<span class="menu-empty">No items yet</span>';
+  } else {
+    chipsEl.innerHTML = menu.map(m => `
+      <div class="menu-chip">
+        <span class="mc-name">${esc(m.name)}</span>
+        ${m.price ? `<span class="mc-price">${m.price.toFixed(3)} JD</span>` : ''}
+        <span class="mc-del" data-key="${esc(m.key)}" title="Remove">✕</span>
+      </div>`).join('');
+    chipsEl.querySelectorAll('.mc-del').forEach(el =>
+      el.addEventListener('click', () => deleteMainMenuItem(el.dataset.key))
     );
-
-    document.getElementById('lastUpdated').textContent =
-      'Live · ' + new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   }
 
-  // ── Submit new order ──────────────────────────────────────────────────────
-
-  window.submitOrder = async function() {
-    const nameInput = document.getElementById('nameInput');
-    const name = nameInput.value.trim();
-    if (!name)         { showToast('Enter your name first'); nameInput.focus(); return; }
-    if (!selectedFood) { showToast('Pick a meal first'); return; }
-
-    const notes = document.getElementById('orderNotes').value.trim();
-    const snap  = await get(ordersRef);
-    const existing = snap.exists() ? Object.values(snap.val()) : [];
-    if (existing.find(o => o.foodKey === selectedFood.key && o.name.toLowerCase() === name.toLowerCase())) {
-      showToast(name + ' already ordered ' + selectedFood.name + '!'); return;
-    }
-
-    const savedName = name;
-    const savedFood = selectedFood.emoji + ' ' + selectedFood.name;
-    await push(ordersRef, {
-      name, foodKey: selectedFood.key,
-      foodName: selectedFood.name, foodEmoji: selectedFood.emoji,
-      notes, ts: Date.now()
-    });
-    resetForm();
-    showToast('✓ Order added for ' + savedName + ': ' + savedFood);
-  };
-
-  // ── Replace ───────────────────────────────────────────────────────────────
-
-  window.replaceOrder = async function() {
-    const name = getTypedName();
-    if (!name)         { showToast('Enter your name first'); return; }
-    if (!selectedFood) { showToast('Pick a new meal first'); return; }
-
-    const snap = await get(ordersRef);
-    if (!snap.exists()) { showToast('No orders found'); return; }
-    const entries = Object.entries(snap.val());
-    const myEntry = entries.find(([, v]) => v.name.toLowerCase() === name.toLowerCase());
-    if (!myEntry) { showToast('No existing order found for ' + name); return; }
-
-    const notes = document.getElementById('orderNotes').value.trim();
-    await set(ref(db, 'orders/' + myEntry[0]), {
-      name: myEntry[1].name,
-      foodKey: selectedFood.key, foodName: selectedFood.name, foodEmoji: selectedFood.emoji,
-      notes, ts: myEntry[1].ts
-    });
-    const savedFood = selectedFood.emoji + ' ' + selectedFood.name;
-    resetForm();
-    showToast('✓ Order updated for ' + myEntry[1].name + ': ' + savedFood);
-  };
-
-  // ── Delete ────────────────────────────────────────────────────────────────
-
-  window.deleteMyOrder = async function() {
-    const name = getTypedName();
-    if (!name) { showToast('Enter your name first'); return; }
-
-    const snap = await get(ordersRef);
-    if (!snap.exists()) { showToast('No orders found'); return; }
-    const entries  = Object.entries(snap.val());
-    const myEntry  = entries.find(([, v]) => v.name.toLowerCase() === name.toLowerCase());
-    if (!myEntry) { showToast('No order found for ' + name); return; }
-
-    if (!confirm('Delete ' + myEntry[1].name + '\'s order (' + myEntry[1].foodEmoji + ' ' + myEntry[1].foodName + ')?')) return;
-    await remove(ref(db, 'orders/' + myEntry[0]));
-    resetForm();
-    showToast('🗑 Order deleted for ' + myEntry[1].name);
-  };
-
-  // ── Join ──────────────────────────────────────────────────────────────────
-
-  async function joinOrder(foodKey) {
-    const nameInput = document.getElementById('nameInput');
-    const name = nameInput.value.trim();
-    if (!name) { nameInput.focus(); showToast('Enter your name above, then click + Join again'); return; }
-
-    const snap = await get(ordersRef);
-    const existing = snap.exists() ? Object.values(snap.val()) : [];
-    if (existing.find(o => o.foodKey === foodKey && o.name.toLowerCase() === name.toLowerCase())) {
-      showToast(name + ' already has this order!'); return;
-    }
-    if (existing.find(o => o.name.toLowerCase() === name.toLowerCase())) {
-      showToast('You already have an order — use Replace My Order to change it'); return;
-    }
-    const menuItem = lastMenu.find(m => m.key === foodKey);
-    if (!menuItem) { showToast('Menu item not found'); return; }
-
-    await push(ordersRef, {
-      name, foodKey: menuItem.key,
-      foodName: menuItem.name, foodEmoji: menuItem.emoji,
-      notes: '', ts: Date.now()
-    });
-    nameInput.value = '';
-    updateFormMode();
-    showToast('✓ ' + name + ' joined: ' + menuItem.emoji + ' ' + menuItem.name);
+  const grid = document.getElementById('foodGrid');
+  if (!menu.length) {
+    grid.innerHTML = '<div class="no-menu-msg">Add items to the menu first</div>';
+    document.getElementById('qtySelectorWrap').style.display = 'none';
+    return;
   }
-
-  // ── Clear All (admin only) ────────────────────────────────────────────────
-
-  window.clearOrders = async function() {
-    const name = getTypedName();
-    if (!isAdmin(name)) { showToast('Only admins can clear all orders'); return; }
-    if (!confirm('Clear ALL orders? Menu stays. Cannot be undone.')) return;
-    await remove(ordersRef);
-    showToast('Orders cleared');
-  };
-
-  // ── Reset ─────────────────────────────────────────────────────────────────
-
-  function resetForm() {
-    document.getElementById('nameInput').value  = '';
-    document.getElementById('orderNotes').value = '';
-    selectedFood = null;
-    document.querySelectorAll('.food-tile').forEach(t => t.classList.remove('selected'));
-    document.getElementById('nameInput').focus();
-    updateFormMode();
-  }
-
-  // ── Firebase listeners ────────────────────────────────────────────────────
-
-  onValue(menuRef, snap => {
-    const menu = snap.exists()
-      ? Object.entries(snap.val()).map(([key,val]) => ({ key, emoji: val.emoji, name: val.name }))
-      : [];
-    renderMenu(menu);
+  grid.innerHTML = menu.map(m => {
+    const isSel = selectedFood && selectedFood.key === m.key;
+    return `<div class="food-tile ${isSel ? 'selected' : ''}" data-key="${esc(m.key)}">
+      <span class="tile-name">${esc(m.name)}</span>
+      ${m.price ? `<span class="tile-price">${m.price.toFixed(3)} JD</span>` : ''}
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('.food-tile').forEach(tile => {
+    tile.addEventListener('click', () => {
+      selectedFood = menu.find(m => m.key === tile.dataset.key) || null;
+      currentQty = 1;
+      document.getElementById('qtyDisplay').textContent = '1';
+      grid.querySelectorAll('.food-tile').forEach(t => t.classList.remove('selected'));
+      tile.classList.add('selected');
+      document.getElementById('qtySelectorWrap').style.display = 'flex';
+      updatePriceSummary();
+    });
   });
+}
 
-  onValue(ordersRef, snap => {
-    const orders = snap.exists()
-      ? Object.entries(snap.val()).map(([key,val]) => ({ firebaseKey: key, ...val }))
-          .sort((a,b) => a.ts - b.ts)
-      : [];
-    renderOrders(orders);
-    updateFormMode();
+// ── Orders ─────────────────────────────────────────────────────────────
+function groupOrders(orders) {
+  const groups = [];
+  orders.forEach(o => {
+    const existing = groups.find(g => g.foodKey === o.foodKey);
+    if (existing) {
+      if (!existing.entries.find(e => e.name === o.name))
+        existing.entries.push({ name: o.name, firebaseKey: o.firebaseKey, qty: o.qty || 1 });
+    } else {
+      groups.push({ foodKey: o.foodKey, foodName: o.foodName, foodPrice: o.foodPrice || null,
+        firstTs: o.ts, entries: [{ name: o.name, firebaseKey: o.firebaseKey, qty: o.qty || 1 }] });
+    }
   });
+  groups.sort((a,b) => a.firstTs - b.firstTs);
+  return groups;
+}
+
+function renderOrders(orders) {
+  lastOrders = orders;
+  const typedName = getTypedName().toLowerCase();
+  const list      = document.getElementById('ordersList');
+  const countEl   = document.getElementById('orderCount');
+
+  if (!orders.length) {
+    countEl.textContent = '0 items';
+    list.innerHTML = '<div class="empty-state"><div class="eicon">🍴</div>No orders yet — be the first!</div>';
+    document.getElementById('deliveryFooter').classList.add('df-hidden');
+    return;
+  }
+
+  const groups = groupOrders(orders);
+  const totalQty = orders.reduce((s, o) => s + (o.qty || 1), 0);
+  countEl.textContent = groups.length + ' dish' + (groups.length !== 1 ? 'es' : '') + ' · ' + totalQty + ' total';
+
+  const deliveryFee = parseFloat(lastSettings.deliveryFee || 0);
+  const uniquePeople = countUniquePeople();
+  const perPersonDelivery = (deliveryFee > 0 && uniquePeople > 0) ? deliveryFee / uniquePeople : 0;
+
+  list.innerHTML = groups.map(g => {
+    const totalGroupQty = g.entries.reduce((s,e) => s + e.qty, 0);
+    const groupTotal = g.foodPrice ? g.foodPrice * totalGroupQty : null;
+
+    const chips = g.entries.map(e => {
+      const isMe = typedName && e.name.toLowerCase() === typedName;
+      const qtyBadge = e.qty > 1 ? `<span class="${isMe ? 'nc-qty' : 'nc-qty'}" style="font-size:10px;background:${isMe?'rgba(200,146,42,0.2)':'#3a2e1a'};padding:1px 6px;border-radius:10px;color:#c8922a;font-weight:700;">×${e.qty}</span>` : '';
+      if (isMe) return `<span class="name-chip-edit">
+        <span class="ce-name">${esc(e.name)}</span>${qtyBadge}
+      </span>`;
+      return `<span class="name-chip">${esc(e.name)}${qtyBadge}</span>`;
+    }).join('');
+
+    const alreadyIn = typedName && g.entries.find(e => e.name.toLowerCase() === typedName);
+    const joinBtn = !alreadyIn ? `<button class="join-btn" data-foodkey="${esc(g.foodKey)}">+ Join</button>` : '';
+
+    const priceBadge = groupTotal ? `<span class="price-badge">${groupTotal.toFixed(3)} JD</span>` : '';
+    const deliveryBadge = perPersonDelivery > 0 ? `<span class="price-badge" style="background:#1a3a2e;color:#7ecfaa;">(+${perPersonDelivery.toFixed(3)} JD)</span>` : '';
+
+    return `
+      <div class="group-ticket">
+        <div class="group-top">
+          <div class="group-order-text">${esc(g.foodName)}</div>
+          <div class="group-meta">
+            ${priceBadge}
+            ${deliveryBadge}
+            <span class="qty-badge">× ${totalGroupQty}</span>
+          </div>
+        </div>
+        <div class="names-row">${chips}${joinBtn}</div>
+      </div>`;
+  }).join('');
+
+  list.querySelectorAll('.join-btn').forEach(btn =>
+    btn.addEventListener('click', () => joinOrder(btn.dataset.foodkey))
+  );
+
+  // Delivery footer
+  if (deliveryFee > 0 || orders.some(o => lastMenu.find(m => m.key === o.foodKey && m.price))) {
+    const foodTotal = orders.reduce((s,o) => {
+      const mi = lastMenu.find(m => m.key === o.foodKey);
+      return s + (mi && mi.price ? mi.price * (o.qty||1) : 0);
+    }, 0);
+    const df = document.getElementById('deliveryFooter');
+    df.classList.remove('df-hidden');
+    document.getElementById('dfTotal').textContent  = uniquePeople + ' people';
+    document.getElementById('dfFee').textContent    = deliveryFee > 0 ? deliveryFee.toFixed(3) + ' JD' : '—';
+    document.getElementById('dfPer').textContent    = perPersonDelivery > 0 ? perPersonDelivery.toFixed(3) + ' JD' : '—';
+    document.getElementById('dfFood').textContent   = foodTotal > 0 ? foodTotal.toFixed(3) + ' JD' : '—';
+  } else {
+    document.getElementById('deliveryFooter').classList.add('df-hidden');
+  }
+
+  document.getElementById('lastUpdated').textContent = 'Live · ' + new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+}
+
+// ── Submit ─────────────────────────────────────────────────────────────
+window.submitOrder = async function() {
+  const nameInput = document.getElementById('nameInput');
+  const name = nameInput.value.trim();
+  if (!name)         { showToast('Enter your name first'); nameInput.focus(); return; }
+  if (!selectedFood) { showToast('Pick a meal first'); return; }
+  if (lastSettings.ordersLocked && !isAdmin(name)) { showToast('Ordering is closed by admin'); return; }
+  const snap = await get(ordersRef);
+  const existing = snap.exists() ? Object.values(snap.val()) : [];
+  if (existing.find(o => o.foodKey === selectedFood.key && o.name.toLowerCase() === name.toLowerCase())) {
+    showToast(name + ' already ordered ' + selectedFood.name + '!'); return;
+  }
+  const savedName = name, savedFood = selectedFood.name;
+  const entry = { name, foodKey: selectedFood.key, foodName: selectedFood.name, qty: currentQty, ts: Date.now() };
+  if (selectedFood.price) entry.foodPrice = selectedFood.price;
+  await push(ordersRef, entry);
+  resetForm();
+  showToast('✓ ' + savedName + ': ' + savedFood + (currentQty > 1 ? ' ×' + currentQty : ''));
+};
+
+// ── Replace ────────────────────────────────────────────────────────────
+window.replaceOrder = async function() {
+  const name = getTypedName();
+  if (!name)         { showToast('Enter your name first'); return; }
+  if (!selectedFood) { showToast('Pick a new meal first'); return; }
+  if (lastSettings.ordersLocked && !isAdmin(name)) { showToast('Ordering is closed by admin'); return; }
+  const snap = await get(ordersRef);
+  if (!snap.exists()) { showToast('No orders found'); return; }
+  const entries = Object.entries(snap.val());
+  const myEntry = entries.find(([,v]) => v.name.toLowerCase() === name.toLowerCase());
+  if (!myEntry) { showToast('No order found for ' + name); return; }
+  const upd = { name: myEntry[1].name, foodKey: selectedFood.key, foodName: selectedFood.name, qty: currentQty, ts: myEntry[1].ts };
+  if (selectedFood.price) upd.foodPrice = selectedFood.price;
+  await set(ref(db, 'orders/' + myEntry[0]), upd);
+  resetForm();
+  showToast('✓ Updated for ' + myEntry[1].name + ': ' + selectedFood.name + (currentQty > 1 ? ' ×' + currentQty : ''));
+};
+
+// ── Delete ─────────────────────────────────────────────────────────────
+window.deleteMyOrder = async function() {
+  const name = getTypedName();
+  if (!name) { showToast('Enter your name first'); return; }
+  const snap = await get(ordersRef);
+  if (!snap.exists()) { showToast('No orders found'); return; }
+  const entries = Object.entries(snap.val());
+  const myEntry = entries.find(([,v]) => v.name.toLowerCase() === name.toLowerCase());
+  if (!myEntry) { showToast('No order found for ' + name); return; }
+  if (!confirm('Delete ' + myEntry[1].name + '\'s order (' + myEntry[1].foodName + ')?')) return;
+  await remove(ref(db, 'orders/' + myEntry[0]));
+  resetForm();
+  showToast('🗑 Deleted order for ' + myEntry[1].name);
+};
+
+// ── Join ───────────────────────────────────────────────────────────────
+async function joinOrder(foodKey) {
+  const nameInput = document.getElementById('nameInput');
+  const name = nameInput.value.trim();
+  if (!name) { nameInput.focus(); showToast('Enter your name above, then click + Join again'); return; }
+  if (lastSettings.ordersLocked && !isAdmin(name)) { showToast('Ordering is closed by admin'); return; }
+  const snap = await get(ordersRef);
+  const existing = snap.exists() ? Object.values(snap.val()) : [];
+  if (existing.find(o => o.foodKey === foodKey && o.name.toLowerCase() === name.toLowerCase())) {
+    showToast(name + ' already has this order!'); return;
+  }
+  if (existing.find(o => o.name.toLowerCase() === name.toLowerCase())) {
+    showToast('You already have an order — use Replace My Order to change it'); return;
+  }
+  const menuItem = lastMenu.find(m => m.key === foodKey);
+  if (!menuItem) { showToast('Menu item not found'); return; }
+  const entry = { name, foodKey: menuItem.key, foodName: menuItem.name, qty: 1, ts: Date.now() };
+  if (menuItem.price) entry.foodPrice = menuItem.price;
+  await push(ordersRef, entry);
+  nameInput.value = '';
+  document.getElementById('adminTabBtn').style.display = 'none';
+  updateFormMode();
+  showToast('✓ ' + name + ' joined: ' + menuItem.name);
+}
+
+// ── Clear ──────────────────────────────────────────────────────────────
+window.clearOrders = async function() {
+  if (!isAdmin(getTypedName())) { showToast('Only admins can clear all orders'); return; }
+  if (!confirm('Clear ALL orders? Menu stays. Cannot be undone.')) return;
+  await remove(ordersRef);
+  showToast('Orders cleared');
+};
+
+// ── Reset form ─────────────────────────────────────────────────────────
+function resetForm() {
+  document.getElementById('nameInput').value = '';
+  document.getElementById('adminTabBtn').style.display = 'none';
+  selectedFood = null; currentQty = 1;
+  document.getElementById('qtyDisplay').textContent = '1';
+  document.getElementById('qtySelectorWrap').style.display = 'none';
+  document.querySelectorAll('.food-tile').forEach(t => t.classList.remove('selected'));
+  document.getElementById('priceSummary').classList.remove('visible');
+  document.getElementById('nameInput').focus();
+  updateFormMode();
+}
+
+// ══ ADMIN: Restaurants ═════════════════════════════════════════════════
+
+window.addRestaurant = async function() {
+  const name = document.getElementById('newRestName').value.trim();
+  if (!name) { showToast('Enter a restaurant name'); return; }
+  await push(restaurantsRef, { name, items: {} });
+  document.getElementById('newRestName').value = '';
+  showToast('✓ Added restaurant: ' + name);
+};
+
+window.deleteRestaurant = async function(key) {
+  if (!confirm('Delete this restaurant and all its menu items?')) return;
+  await remove(ref(db, 'restaurants/' + key));
+  showToast('Restaurant deleted');
+};
+
+window.activateRestaurant = async function(key) {
+  const rest = lastRestaurants[key];
+  if (!rest) return;
+  const currentActive = lastSettings.activeRestaurant;
+  if (currentActive === key) {
+    // Deactivate — clear menu
+    await set(ref(db,'settings/activeRestaurant'), null);
+    await remove(menuRef);
+    showToast('Restaurant deactivated — menu cleared');
+    return;
+  }
+  // Activate: push restaurant items to main menu
+  await set(ref(db,'settings/activeRestaurant'), key);
+  await remove(menuRef);
+  await set(ref(db,'settings/restaurantName'), rest.name);
+  const items = rest.items ? Object.values(rest.items) : [];
+  for (const item of items) {
+    const entry = { name: item.name };
+    if (item.price) entry.price = item.price;
+    await push(menuRef, entry);
+  }
+  showToast('✓ ' + rest.name + ' is now active — menu updated');
+};
+
+window.addRestaurantItem = async function(restKey) {
+  const nameEl  = document.getElementById('ri-name-' + restKey);
+  const priceEl = document.getElementById('ri-price-' + restKey);
+  const name    = nameEl.value.trim();
+  const price   = parseFloat(priceEl.value) || null;
+  if (!name) { showToast('Enter item name'); return; }
+  const entry = { name };
+  if (price) entry.price = price;
+  await push(ref(db, 'restaurants/' + restKey + '/items'), entry);
+  nameEl.value = ''; priceEl.value = '';
+  showToast('✓ Added: ' + name);
+};
+
+window.deleteRestaurantItem = async function(restKey, itemKey) {
+  await remove(ref(db, 'restaurants/' + restKey + '/items/' + itemKey));
+  showToast('Item removed');
+};
+
+window.updateRestaurantItem = async function(restKey, itemKey, field, value) {
+  const trimmed = value.trim();
+  if (field === 'name' && !trimmed) { showToast('Name cannot be empty'); return; }
+  const update = {};
+  if (field === 'name') {
+    update['restaurants/' + restKey + '/items/' + itemKey + '/name'] = trimmed;
+  } else if (field === 'price') {
+    const parsed = parseFloat(trimmed);
+    update['restaurants/' + restKey + '/items/' + itemKey + '/price'] = isNaN(parsed) ? null : parsed;
+  }
+  await set(ref(db, 'restaurants/' + restKey + '/items/' + itemKey + '/' + field),
+    field === 'price' ? (parseFloat(trimmed) || null) : trimmed
+  );
+};
+
+function renderRestaurants(restaurants, settings) {
+  const container = document.getElementById('restList');
+  const keys = Object.keys(restaurants);
+  if (!keys.length) {
+    container.innerHTML = '<p style="color:#3a5a44;font-size:13px;font-style:italic;">No restaurants yet — add one below</p>';
+    return;
+  }
+  const activeKey = settings.activeRestaurant || null;
+
+  container.innerHTML = keys.map(key => {
+    const r = restaurants[key];
+    const isActive = activeKey === key;
+    const items = r.items ? Object.entries(r.items) : [];
+
+    const itemRows = items.map(([iKey, item]) => `
+      <div class="rest-item-row" data-rkey="${esc(key)}" data-ikey="${esc(iKey)}">
+        <input
+          class="rir-name"
+          type="text"
+          value="${esc(item.name)}"
+          maxlength="60"
+          placeholder="Item name"
+          data-rkey="${esc(key)}" data-ikey="${esc(iKey)}" data-field="name"
+        />
+        <div class="rir-price-wrap">
+          <input
+            class="rir-price"
+            type="number"
+            value="${item.price ? item.price.toFixed(3) : ''}"
+            min="0" step="0.001"
+            placeholder="Price"
+            data-rkey="${esc(key)}" data-ikey="${esc(iKey)}" data-field="price"
+          />
+          <span class="rir-jd">JD</span>
+        </div>
+        <span class="ric-del" data-rkey="${esc(key)}" data-ikey="${esc(iKey)}" title="Remove">✕</span>
+      </div>`).join('');
+
+    return `
+      <div class="rest-card">
+        <div class="rest-card-header ${isActive ? 'active-rest' : ''}">
+          <span class="rch-name">${esc(r.name)}</span>
+          <button class="btn-activate ${isActive ? 'deactivate' : ''}" data-key="${esc(key)}">
+            ${isActive ? '⏹ Deactivate' : '▶ Activate'}
+          </button>
+          <span class="rch-badge ${isActive ? 'is-active' : ''}">${isActive ? 'Active' : 'Inactive'}</span>
+          <span class="rch-del" data-key="${esc(key)}" title="Delete restaurant">🗑</span>
+        </div>
+        <div class="rest-body">
+          <div class="rest-body-title">Menu Items — click any field to edit</div>
+          <div class="rest-items-list">${itemRows || '<span style="color:#3a5a44;font-size:12px;font-style:italic;">No items yet</span>'}</div>
+          <div class="add-item-row" style="margin-top:14px;">
+            <div class="ai-field" style="flex:1;min-width:140px;">
+              <label>Item name</label>
+              <input class="ai-input" type="text" id="ri-name-${key}" placeholder="e.g. Shawarma" maxlength="60" />
+            </div>
+            <div class="ai-field" style="width:110px;">
+              <label>Price (JD)</label>
+              <input class="ai-input" type="number" id="ri-price-${key}" placeholder="0.000" min="0" step="0.001" style="width:110px;" />
+            </div>
+            <button class="btn-admin btn-green" style="align-self:flex-end;" data-rkey="${esc(key)}">+ Add</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  // Events
+  container.querySelectorAll('.btn-activate').forEach(btn =>
+    btn.addEventListener('click', () => activateRestaurant(btn.dataset.key))
+  );
+  container.querySelectorAll('.rch-del').forEach(el =>
+    el.addEventListener('click', () => deleteRestaurant(el.dataset.key))
+  );
+  container.querySelectorAll('.ric-del').forEach(el =>
+    el.addEventListener('click', () => deleteRestaurantItem(el.dataset.rkey, el.dataset.ikey))
+  );
+  container.querySelectorAll('.btn-admin.btn-green[data-rkey]').forEach(btn =>
+    btn.addEventListener('click', () => addRestaurantItem(btn.dataset.rkey))
+  );
+
+  // Inline edit: save on blur or Enter
+  container.querySelectorAll('.rir-name, .rir-price').forEach(input => {
+    let original = input.value;
+
+    input.addEventListener('focus', () => {
+      original = input.value;
+      input.style.borderColor = '#5BAD8F';
+    });
+
+    const save = async () => {
+      input.style.borderColor = '';
+      const { rkey, ikey, field } = input.dataset;
+      const val = input.value.trim();
+      if (val === original) return; // no change
+      if (field === 'name' && !val) { input.value = original; showToast('Name cannot be empty'); return; }
+      if (field === 'price') {
+        const parsed = parseFloat(val);
+        await set(ref(db, 'restaurants/' + rkey + '/items/' + ikey + '/price'), isNaN(parsed) ? null : parsed);
+      } else {
+        await set(ref(db, 'restaurants/' + rkey + '/items/' + ikey + '/name'), val);
+      }
+      input.style.background = '#1a3a28';
+      setTimeout(() => input.style.background = '', 800);
+      showToast('✓ Saved');
+    };
+
+    input.addEventListener('blur', save);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } });
+  });
+}
+
+// ══ Firebase listeners ══════════════════════════════════════════════════
+
+onValue(ref(db,'settings'), snap => {
+  lastSettings = snap.exists() ? snap.val() : {};
+
+  // Restaurant name
+  const rnVal = lastSettings.restaurantName || '';
+  if (document.activeElement !== rnInput) rnInput.value = rnVal;
+
+  // Lock state
+  const locked = !!lastSettings.menuLocked;
+  applyLockUI(locked);
+
+  // Orders lock state
+  const ordersLocked = !!lastSettings.ordersLocked;
+  applyOrdersLockUI(ordersLocked);
+
+  // Delivery fee in admin
+  const df = parseFloat(lastSettings.deliveryFee || 0);
+  if (document.activeElement !== document.getElementById('deliveryFeeInput'))
+    document.getElementById('deliveryFeeInput').value = df > 0 ? df : '';
+
+  updatePriceSummary();
+  renderOrders(lastOrders);
+});
+
+onValue(menuRef, snap => {
+  const menu = snap.exists()
+    ? Object.entries(snap.val()).map(([key,val]) => ({ key, name: val.name, price: val.price || null }))
+    : [];
+  renderMenu(menu);
+});
+
+onValue(ordersRef, snap => {
+  const orders = snap.exists()
+    ? Object.entries(snap.val()).map(([key,val]) => ({ firebaseKey: key, ...val })).sort((a,b) => a.ts - b.ts)
+    : [];
+  renderOrders(orders);
+  updateFormMode();
+});
+
+onValue(restaurantsRef, snap => {
+  lastRestaurants = snap.exists() ? snap.val() : {};
+  renderRestaurants(lastRestaurants, lastSettings);
+});
 </script>
 </body>
 </html>
