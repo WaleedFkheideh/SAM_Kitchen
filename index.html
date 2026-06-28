@@ -428,6 +428,7 @@ body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh;
         <div class="df-item">Delivery fee: <span id="dfFee">—</span></div>
         <div class="df-item">Per person: <span id="dfPer">—</span></div>
         <div class="df-item">Food total: <span id="dfFood">—</span></div>
+        <div class="df-item" style="border-left:1px solid #c8922a44;padding-left:12px;">Grand total: <span id="dfGrand" style="color:#e8c87a;">—</span></div>
       </div>
     </div>
   </div>
@@ -656,20 +657,24 @@ function applyLockUI(manualLocked) {
   const editor      = document.getElementById('mainMenuEditor');
   const banner      = document.getElementById('lockBanner');
   const isAdminUser = isAdmin(document.getElementById('nameInput').value.trim());
-
-  // Lock if manual lock ON *or* a restaurant is currently active
   const restaurantActive = !!(lastSettings.activeRestaurant);
-  const effectiveLocked  = manualLocked || restaurantActive;
 
-  if (effectiveLocked && !isAdminUser) {
+  // Manual lock: hide entire editor for non-admins
+  if (manualLocked && !isAdminUser) {
     editor.style.display = 'none';
     banner.style.display = 'flex';
-    banner.querySelector('span:last-child').textContent = restaurantActive
-      ? 'Menu is set by the active restaurant — only admins can edit it'
-      : 'Menu is managed by admin — only admins can edit the menu';
+    banner.querySelector('span:last-child').textContent = 'Menu is managed by admin — only admins can edit the menu';
   } else {
+    // Restaurant active: show add form but hide delete (✕) on chips
     editor.style.display = 'block';
-    banner.style.display = 'none';
+    banner.style.display = restaurantActive && !isAdminUser ? 'flex' : 'none';
+    if (restaurantActive && !isAdminUser) {
+      banner.querySelector('span:last-child').textContent = 'Restaurant menu is active — you can add items but cannot delete existing ones';
+    }
+    // Show/hide del buttons on chips
+    document.querySelectorAll('#menuChips .mc-del').forEach(el => {
+      el.style.display = (restaurantActive && !isAdminUser) ? 'none' : '';
+    });
   }
   document.getElementById('lockToggle').checked = manualLocked;
 }
@@ -686,9 +691,8 @@ window.addMainMenuItem = async function() {
   const name  = document.getElementById('menuName').value.trim();
   const price = parseFloat(document.getElementById('menuPrice').value) || null;
   if (!name) { showToast('Enter a food name'); return; }
-  const restaurantActive = !!(lastSettings.activeRestaurant);
-  const isAdminUser = isAdmin(getTypedName());
-  if ((restaurantActive || lastSettings.menuLocked) && !isAdminUser) {
+  // Adding is always allowed — only deletion is restricted when restaurant is active
+  if (lastSettings.menuLocked && !isAdmin(getTypedName())) {
     showToast('Menu is locked — only admins can edit it'); return;
   }
   if (lastMenu.find(m => m.name.toLowerCase() === name.toLowerCase())) { showToast('Already on the menu!'); return; }
@@ -704,7 +708,7 @@ window.deleteMainMenuItem = async function(key) {
   const restaurantActive = !!(lastSettings.activeRestaurant);
   const isAdminUser = isAdmin(getTypedName());
   if ((restaurantActive || lastSettings.menuLocked) && !isAdminUser) {
-    showToast('Menu is locked — only admins can edit it'); return;
+    showToast('Cannot delete — restaurant menu is active'); return;
   }
   await remove(ref(db, 'menu/' + key));
   if (selectedFood && selectedFood.key === key) { selectedFood = null; currentQty = 1; }
@@ -829,18 +833,19 @@ function renderOrders(orders) {
     btn.addEventListener('click', () => joinOrder(btn.dataset.foodkey))
   );
 
-  // Delivery footer
-  if (deliveryFee > 0 || orders.some(o => lastMenu.find(m => m.key === o.foodKey && m.price))) {
-    const foodTotal = orders.reduce((s,o) => {
-      const mi = lastMenu.find(m => m.key === o.foodKey);
-      return s + (mi && mi.price ? mi.price * (o.qty||1) : 0);
-    }, 0);
+  // Delivery footer — always compute food total from stored prices on orders
+  const foodTotal = orders.reduce((s, o) => s + ((o.foodPrice || 0) * (o.qty || 1)), 0);
+  const grandTotal = foodTotal + deliveryFee;
+  const hasPrices = foodTotal > 0 || deliveryFee > 0;
+
+  if (hasPrices) {
     const df = document.getElementById('deliveryFooter');
     df.classList.remove('df-hidden');
-    document.getElementById('dfTotal').textContent  = uniquePeople + ' people';
-    document.getElementById('dfFee').textContent    = deliveryFee > 0 ? deliveryFee.toFixed(3) + ' JD' : '—';
-    document.getElementById('dfPer').textContent    = perPersonDelivery > 0 ? perPersonDelivery.toFixed(3) + ' JD' : '—';
-    document.getElementById('dfFood').textContent   = foodTotal > 0 ? foodTotal.toFixed(3) + ' JD' : '—';
+    document.getElementById('dfTotal').textContent = uniquePeople + ' people';
+    document.getElementById('dfFee').textContent   = deliveryFee > 0 ? deliveryFee.toFixed(3) + ' JD' : '—';
+    document.getElementById('dfPer').textContent   = perPersonDelivery > 0 ? perPersonDelivery.toFixed(3) + ' JD' : '—';
+    document.getElementById('dfFood').textContent  = foodTotal > 0 ? foodTotal.toFixed(3) + ' JD' : '—';
+    document.getElementById('dfGrand').textContent = grandTotal > 0 ? grandTotal.toFixed(3) + ' JD' : '—';
   } else {
     document.getElementById('deliveryFooter').classList.add('df-hidden');
   }
