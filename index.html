@@ -305,7 +305,7 @@ body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh;
 
       <div class="menu-picture-area" style="display:flex;flex-direction:column;align-items:center;">
         <div class="menu-picture-frame">
-          <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=900&q=80" alt="Menu" draggable="false" />
+          <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&q=80" alt="Menu" draggable="false" />
           <div class="menu-pic-label">Today's Selection</div>
         </div>
       </div>
@@ -611,6 +611,10 @@ function countUniquePeople() {
 const rnInput = document.getElementById('restaurantNameInput');
 let rnTimer = null;
 rnInput.addEventListener('input', () => {
+  const isAdminUser      = isAdmin(getTypedName());
+  const restaurantActive = !!(lastSettings.activeRestaurant);
+  const manualLocked     = !!(lastSettings.menuLocked);
+  if ((manualLocked || restaurantActive) && !isAdminUser) return; // blocked
   clearTimeout(rnTimer);
   rnTimer = setTimeout(() => set(ref(db,'settings/restaurantName'), rnInput.value.trim()), 800);
 });
@@ -654,28 +658,45 @@ function applyOrdersLockUI(locked) {
 }
 
 function applyLockUI(manualLocked) {
-  const editor      = document.getElementById('mainMenuEditor');
-  const banner      = document.getElementById('lockBanner');
-  const isAdminUser = isAdmin(document.getElementById('nameInput').value.trim());
+  const editor           = document.getElementById('mainMenuEditor');
+  const banner           = document.getElementById('lockBanner');
+  const isAdminUser      = isAdmin(document.getElementById('nameInput').value.trim());
   const restaurantActive = !!(lastSettings.activeRestaurant);
+  const restricted       = (manualLocked || restaurantActive) && !isAdminUser;
 
-  // Manual lock: hide entire editor for non-admins
-  if (manualLocked && !isAdminUser) {
-    editor.style.display = 'none';
+  // Banner message
+  if (restricted) {
     banner.style.display = 'flex';
-    banner.querySelector('span:last-child').textContent = 'Menu is managed by admin — only admins can edit the menu';
+    banner.querySelector('span:last-child').textContent = restaurantActive
+      ? 'Restaurant menu is active — you can add items but cannot change the restaurant name or delete items'
+      : 'Menu is locked by admin — you can add items but cannot change the restaurant name or delete items';
   } else {
-    // Restaurant active: show add form but hide delete (✕) on chips
-    editor.style.display = 'block';
-    banner.style.display = restaurantActive && !isAdminUser ? 'flex' : 'none';
-    if (restaurantActive && !isAdminUser) {
-      banner.querySelector('span:last-child').textContent = 'Restaurant menu is active — you can add items but cannot delete existing ones';
-    }
-    // Show/hide del buttons on chips
-    document.querySelectorAll('#menuChips .mc-del').forEach(el => {
-      el.style.display = (restaurantActive && !isAdminUser) ? 'none' : '';
-    });
+    banner.style.display = 'none';
   }
+
+  // Add form always visible (admins and non-admins can always add items)
+  editor.style.display = 'block';
+
+  // Restaurant name field: editable only if not restricted
+  const rnEl = document.getElementById('restaurantNameInput');
+  const rnHint = document.getElementById('rnHint');
+  if (restricted) {
+    rnEl.readOnly = true;
+    rnEl.style.opacity = '0.5';
+    rnEl.style.cursor  = 'default';
+    if (rnHint) rnHint.style.display = 'none';
+  } else {
+    rnEl.readOnly = false;
+    rnEl.style.opacity = '';
+    rnEl.style.cursor  = '';
+    if (rnHint) rnHint.style.display = '';
+  }
+
+  // Chip delete buttons: hidden for non-admins when restricted
+  document.querySelectorAll('#menuChips .mc-del').forEach(el => {
+    el.style.display = restricted ? 'none' : '';
+  });
+
   document.getElementById('lockToggle').checked = manualLocked;
 }
 
@@ -691,10 +712,6 @@ window.addMainMenuItem = async function() {
   const name  = document.getElementById('menuName').value.trim();
   const price = parseFloat(document.getElementById('menuPrice').value) || null;
   if (!name) { showToast('Enter a food name'); return; }
-  // Adding is always allowed — only deletion is restricted when restaurant is active
-  if (lastSettings.menuLocked && !isAdmin(getTypedName())) {
-    showToast('Menu is locked — only admins can edit it'); return;
-  }
   if (lastMenu.find(m => m.name.toLowerCase() === name.toLowerCase())) { showToast('Already on the menu!'); return; }
   const item = { name };
   if (price) item.price = price;
