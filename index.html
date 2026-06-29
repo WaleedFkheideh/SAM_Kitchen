@@ -119,6 +119,17 @@ body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh;
 .price-summary.visible { display: block; }
 .ps-row { display: flex; justify-content: space-between; font-size: 12px; color: #7a6040; margin-bottom: 4px; font-family: 'Inter', sans-serif; }
 .ps-row:last-child { margin-bottom: 0; padding-top: 6px; border-top: 1px dashed #e2cfa8; font-weight: 700; color: #1a1208; font-size: 13px; }
+/* Tile qty controls */
+.tile-qty-controls { display: flex; align-items: center; gap: 0; margin-top: 6px; border: 1px solid #e2cfa8; border-radius: 4px; overflow: hidden; }
+
+/* Cart summary */
+.cart-item-row { display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #fff8ec; border: 1px solid #e8d9b0; border-radius: 6px; margin-bottom: 5px; }
+.cart-item-name { flex: 1; font-size: 13px; font-weight: 700; color: #1a1208; font-family: 'Playfair Display', serif; }
+.cart-item-qty { display: flex; align-items: center; gap: 0; border: 1px solid #e2cfa8; border-radius: 4px; overflow: hidden; flex-shrink: 0; }
+.cart-item-price { font-size: 12px; font-weight: 700; color: #c8922a; flex-shrink: 0; min-width: 60px; text-align: right; }
+.cart-item-remove { cursor: pointer; color: #b8956a; font-size: 13px; margin-left: 2px; flex-shrink: 0; transition: color 0.15s; }
+.cart-item-remove:hover { color: #c0392b; }
+
 .ps-val { font-weight: 600; color: #c8922a; }
 
 .btn-submit { width: 100%; padding: 12px; background: #c8922a; color: #fff; border: none; border-radius: 4px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: all 0.15s; margin-top: 8px; }
@@ -365,7 +376,7 @@ body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh;
 
           <!-- Meal + Qty -->
           <div class="form-block">
-            <label>Choose your meal</label>
+            <label>Choose your meals</label>
             <div class="food-grid" id="foodGrid">
               <div class="no-menu-msg">Add items to the menu first</div>
             </div>
@@ -377,8 +388,13 @@ body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh;
                 <button class="qty-btn" onclick="changeQty(1)">+</button>
               </div>
             </div>
+            <!-- Cart summary -->
+            <div id="cartSummaryWrap" style="display:none;margin-top:12px;">
+              <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#b8956a;font-weight:700;margin-bottom:7px;">🛒 Your cart</div>
+              <div id="cartItemsList"></div>
+            </div>
             <div class="price-summary" id="priceSummary">
-              <div class="ps-row"><span>Meal</span><span class="ps-val" id="psMeal">—</span></div>
+              <div class="ps-row"><span>Meal total</span><span class="ps-val" id="psMeal">—</span></div>
               <div class="ps-row"><span>Delivery share</span><span class="ps-val" id="psDelivery">—</span></div>
               <div class="ps-row"><span>Your total</span><span class="ps-val" id="psTotal">—</span></div>
             </div>
@@ -525,6 +541,8 @@ function isAdmin(n) { return ADMINS.includes((n||'').trim().toLowerCase()); }
 
 let lastOrders = [], lastMenu = [], lastSettings = {}, lastRestaurants = {};
 let selectedFood = null, currentQty = 1;
+// Multi-item cart: { [foodKey]: { food, qty } }
+let cart = {};
 
 // ── Toast ──────────────────────────────────────────────────────────────
 function showToast(msg) {
@@ -551,6 +569,7 @@ window.switchTab = function(tab) {
 function getTypedName() { return document.getElementById('nameInput').value.trim(); }
 function findMyOrder(name) {
   if (!name) return null;
+  // Returns the first order entry for this person (used to detect edit mode)
   return lastOrders.find(o => o.name.toLowerCase() === name.toLowerCase()) || null;
 }
 
@@ -559,6 +578,9 @@ document.getElementById('nameInput').addEventListener('input', () => {
   document.getElementById('adminTabBtn').style.display = isAdmin(name) ? 'flex' : 'none';
   applyLockUI(!!lastSettings.menuLocked);
   applyOrdersLockUI(!!lastSettings.ordersLocked);
+  const myOrder = findMyOrder(name);
+  if (myOrder && cartIsEmpty()) prefillCartFromOrder(name);
+  if (!myOrder) { cart = {}; renderFoodGrid(); renderCartSummary(); updatePriceSummary(); }
   updateFormMode();
 });
 
@@ -574,31 +596,96 @@ function updateFormMode() {
   renderOrders(lastOrders);
 }
 
-// ── Qty ────────────────────────────────────────────────────────────────
+// Pre-populate cart when user has existing order (for replace flow)
+function prefillCartFromOrder(name) {
+  if (!name) return;
+  cart = {};
+  const myOrders = lastOrders.filter(o => o.name.toLowerCase() === name.toLowerCase());
+  myOrders.forEach(o => {
+    const food = lastMenu.find(m => m.key === o.foodKey);
+    if (food) cart[food.key] = { food, qty: o.qty || 1 };
+  });
+  renderFoodGrid();
+  renderCartSummary();
+  updatePriceSummary();
+}
+
+// ── Qty (per-tile inline controls) ────────────────────────────────────
 window.changeQty = function(delta) {
   currentQty = Math.max(1, currentQty + delta);
   document.getElementById('qtyDisplay').textContent = currentQty;
   updatePriceSummary();
 };
 
+// Change qty for a specific cart item via the inline ± buttons on the tile
+window.changeTileQty = function(foodKey, delta) {
+  if (!cart[foodKey]) return;
+  const newQty = Math.max(1, cart[foodKey].qty + delta);
+  cart[foodKey].qty = newQty;
+  // Update the displayed number on the tile
+  const el = document.querySelector(`.food-tile[data-key="${foodKey}"] .tile-qty-display`);
+  if (el) el.textContent = newQty;
+  updatePriceSummary();
+  renderCartSummary();
+};
+
+// Toggle a food tile in/out of cart
+window.toggleCartItem = function(foodKey) {
+  if (cart[foodKey]) {
+    delete cart[foodKey];
+  } else {
+    const food = lastMenu.find(m => m.key === foodKey);
+    if (food) cart[foodKey] = { food, qty: 1 };
+  }
+  renderFoodGrid();
+  renderCartSummary();
+  updatePriceSummary();
+};
+
+function cartIsEmpty() { return Object.keys(cart).length === 0; }
+
 function updatePriceSummary() {
   const ps = document.getElementById('priceSummary');
-  if (!selectedFood) { ps.classList.remove('visible'); return; }
+  if (cartIsEmpty()) { ps.classList.remove('visible'); return; }
 
   const deliveryFee = parseFloat(lastSettings.deliveryFee || 0);
   const peopleCount = countUniquePeople();
-  const mealTotal   = selectedFood.price ? selectedFood.price * currentQty : null;
-  const deliverySplit = (deliveryFee > 0 && peopleCount >= 0)
-    ? deliveryFee / (peopleCount + 1) : null;  // +1 = current person not yet added
 
-  const hasPricing = mealTotal !== null || deliverySplit !== null;
+  let mealTotal = 0, hasPrices = false;
+  Object.values(cart).forEach(({ food, qty }) => {
+    if (food.price) { mealTotal += food.price * qty; hasPrices = true; }
+  });
+
+  const deliverySplit = (deliveryFee > 0 && peopleCount >= 0)
+    ? deliveryFee / (peopleCount + 1) : null;
+
+  const hasPricing = hasPrices || deliverySplit !== null;
   if (!hasPricing) { ps.classList.remove('visible'); return; }
 
   ps.classList.add('visible');
-  document.getElementById('psMeal').textContent     = mealTotal !== null ? mealTotal.toFixed(3) + ' JD' : '—';
+  document.getElementById('psMeal').textContent     = hasPrices ? mealTotal.toFixed(3) + ' JD' : '—';
   document.getElementById('psDelivery').textContent = deliverySplit !== null ? deliverySplit.toFixed(3) + ' JD' : '—';
-  const total = (mealTotal || 0) + (deliverySplit || 0);
+  const total = mealTotal + (deliverySplit || 0);
   document.getElementById('psTotal').textContent    = hasPricing ? total.toFixed(3) + ' JD' : '—';
+}
+
+function renderCartSummary() {
+  const wrap = document.getElementById('cartSummaryWrap');
+  const list = document.getElementById('cartItemsList');
+  if (!wrap || !list) return;
+  if (cartIsEmpty()) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  list.innerHTML = Object.values(cart).map(({ food, qty }) => `
+    <div class="cart-item-row">
+      <span class="cart-item-name">${esc(food.name)}</span>
+      <div class="cart-item-qty">
+        <button class="qty-btn" style="width:26px;height:26px;font-size:15px;" onclick="changeTileQty('${esc(food.key)}', -1)">−</button>
+        <span class="qty-display" style="width:28px;line-height:26px;font-size:13px;">${qty}</span>
+        <button class="qty-btn" style="width:26px;height:26px;font-size:15px;" onclick="changeTileQty('${esc(food.key)}', 1)">+</button>
+      </div>
+      ${food.price ? `<span class="cart-item-price">${(food.price * qty).toFixed(3)} JD</span>` : ''}
+      <span class="cart-item-remove" onclick="toggleCartItem('${esc(food.key)}')" title="Remove">✕</span>
+    </div>`).join('');
 }
 
 function countUniquePeople() {
@@ -728,6 +815,7 @@ window.deleteMainMenuItem = async function(key) {
     showToast('Cannot delete — restaurant menu is active'); return;
   }
   await remove(ref(db, 'menu/' + key));
+  if (cart[key]) { delete cart[key]; renderCartSummary(); updatePriceSummary(); }
   if (selectedFood && selectedFood.key === key) { selectedFood = null; currentQty = 1; }
   showToast('Removed from menu');
 };
@@ -749,30 +837,37 @@ function renderMenu(menu) {
     );
   }
 
+  // Clean cart of removed items
+  Object.keys(cart).forEach(k => { if (!menu.find(m => m.key === k)) delete cart[k]; });
+
+  renderFoodGrid();
+  renderCartSummary();
+}
+
+function renderFoodGrid() {
+  const menu = lastMenu;
   const grid = document.getElementById('foodGrid');
   if (!menu.length) {
     grid.innerHTML = '<div class="no-menu-msg">Add items to the menu first</div>';
     document.getElementById('qtySelectorWrap').style.display = 'none';
     return;
   }
+  // Hide legacy qty selector — we use inline per-tile controls now
+  document.getElementById('qtySelectorWrap').style.display = 'none';
+
   grid.innerHTML = menu.map(m => {
-    const isSel = selectedFood && selectedFood.key === m.key;
-    return `<div class="food-tile ${isSel ? 'selected' : ''}" data-key="${esc(m.key)}">
+    const inCart = !!cart[m.key];
+    const qty    = inCart ? cart[m.key].qty : 1;
+    return `<div class="food-tile ${inCart ? 'selected' : ''}" data-key="${esc(m.key)}" onclick="toggleCartItem('${esc(m.key)}')">
       <span class="tile-name">${esc(m.name)}</span>
       ${m.price ? `<span class="tile-price">${m.price.toFixed(3)} JD</span>` : ''}
+      ${inCart ? `<div class="tile-qty-controls" onclick="event.stopPropagation()">
+        <button class="qty-btn" style="width:24px;height:24px;font-size:14px;border-radius:3px;" onclick="changeTileQty('${esc(m.key)}',-1)">−</button>
+        <span class="tile-qty-display qty-display" style="width:28px;line-height:24px;font-size:13px;">${qty}</span>
+        <button class="qty-btn" style="width:24px;height:24px;font-size:14px;border-radius:3px;" onclick="changeTileQty('${esc(m.key)}',1)">+</button>
+      </div>` : ''}
     </div>`;
   }).join('');
-  grid.querySelectorAll('.food-tile').forEach(tile => {
-    tile.addEventListener('click', () => {
-      selectedFood = menu.find(m => m.key === tile.dataset.key) || null;
-      currentQty = 1;
-      document.getElementById('qtyDisplay').textContent = '1';
-      grid.querySelectorAll('.food-tile').forEach(t => t.classList.remove('selected'));
-      tile.classList.add('selected');
-      document.getElementById('qtySelectorWrap').style.display = 'flex';
-      updatePriceSummary();
-    });
-  });
 }
 
 // ── Orders ─────────────────────────────────────────────────────────────
@@ -874,38 +969,49 @@ function renderOrders(orders) {
 window.submitOrder = async function() {
   const nameInput = document.getElementById('nameInput');
   const name = nameInput.value.trim();
-  if (!name)         { showToast('Enter your name first'); nameInput.focus(); return; }
-  if (!selectedFood) { showToast('Pick a meal first'); return; }
+  if (!name)          { showToast('Enter your name first'); nameInput.focus(); return; }
+  if (cartIsEmpty())  { showToast('Pick at least one meal first'); return; }
   if (lastSettings.ordersLocked && !isAdmin(name)) { showToast('Ordering is closed by admin'); return; }
   const snap = await get(ordersRef);
   const existing = snap.exists() ? Object.values(snap.val()) : [];
-  if (existing.find(o => o.foodKey === selectedFood.key && o.name.toLowerCase() === name.toLowerCase())) {
-    showToast(name + ' already ordered ' + selectedFood.name + '!'); return;
+  if (existing.find(o => o.name.toLowerCase() === name.toLowerCase())) {
+    showToast(name + ' already has an order — use Replace My Order'); return;
   }
-  const savedName = name, savedFood = selectedFood.name;
-  const entry = { name, foodKey: selectedFood.key, foodName: selectedFood.name, qty: currentQty, ts: Date.now() };
-  if (selectedFood.price) entry.foodPrice = selectedFood.price;
-  await push(ordersRef, entry);
+  const items = Object.values(cart);
+  for (const { food, qty } of items) {
+    const entry = { name, foodKey: food.key, foodName: food.name, qty, ts: Date.now() };
+    if (food.price) entry.foodPrice = food.price;
+    await push(ordersRef, entry);
+  }
+  const summary = items.map(({food, qty}) => food.name + (qty > 1 ? ' ×'+qty : '')).join(', ');
+  showToast('✓ ' + name + ': ' + summary);
   resetForm();
-  showToast('✓ ' + savedName + ': ' + savedFood + (currentQty > 1 ? ' ×' + currentQty : ''));
 };
 
 // ── Replace ────────────────────────────────────────────────────────────
 window.replaceOrder = async function() {
   const name = getTypedName();
   if (!name)         { showToast('Enter your name first'); return; }
-  if (!selectedFood) { showToast('Pick a new meal first'); return; }
+  if (cartIsEmpty()) { showToast('Pick at least one new meal first'); return; }
   if (lastSettings.ordersLocked && !isAdmin(name)) { showToast('Ordering is closed by admin'); return; }
   const snap = await get(ordersRef);
   if (!snap.exists()) { showToast('No orders found'); return; }
   const entries = Object.entries(snap.val());
-  const myEntry = entries.find(([,v]) => v.name.toLowerCase() === name.toLowerCase());
-  if (!myEntry) { showToast('No order found for ' + name); return; }
-  const upd = { name: myEntry[1].name, foodKey: selectedFood.key, foodName: selectedFood.name, qty: currentQty, ts: myEntry[1].ts };
-  if (selectedFood.price) upd.foodPrice = selectedFood.price;
-  await set(ref(db, 'orders/' + myEntry[0]), upd);
+  const myEntries = entries.filter(([,v]) => v.name.toLowerCase() === name.toLowerCase());
+  if (!myEntries.length) { showToast('No order found for ' + name); return; }
+  // Remove all existing entries for this person
+  for (const [key] of myEntries) await remove(ref(db, 'orders/' + key));
+  // Add new cart items
+  const ts = myEntries[0][1].ts; // preserve original timestamp
+  const items = Object.values(cart);
+  for (const { food, qty } of items) {
+    const upd = { name, foodKey: food.key, foodName: food.name, qty, ts };
+    if (food.price) upd.foodPrice = food.price;
+    await push(ordersRef, upd);
+  }
+  const summary = items.map(({food, qty}) => food.name + (qty > 1 ? ' ×'+qty : '')).join(', ');
+  showToast('✓ Updated for ' + name + ': ' + summary);
   resetForm();
-  showToast('✓ Updated for ' + myEntry[1].name + ': ' + selectedFood.name + (currentQty > 1 ? ' ×' + currentQty : ''));
 };
 
 // ── Delete ─────────────────────────────────────────────────────────────
@@ -915,12 +1021,13 @@ window.deleteMyOrder = async function() {
   const snap = await get(ordersRef);
   if (!snap.exists()) { showToast('No orders found'); return; }
   const entries = Object.entries(snap.val());
-  const myEntry = entries.find(([,v]) => v.name.toLowerCase() === name.toLowerCase());
-  if (!myEntry) { showToast('No order found for ' + name); return; }
-  if (!confirm('Delete ' + myEntry[1].name + '\'s order (' + myEntry[1].foodName + ')?')) return;
-  await remove(ref(db, 'orders/' + myEntry[0]));
+  const myEntries = entries.filter(([,v]) => v.name.toLowerCase() === name.toLowerCase());
+  if (!myEntries.length) { showToast('No order found for ' + name); return; }
+  const dishes = [...new Set(myEntries.map(([,v]) => v.foodName))].join(', ');
+  if (!confirm('Delete all of ' + name + '\'s orders (' + dishes + ')?')) return;
+  for (const [key] of myEntries) await remove(ref(db, 'orders/' + key));
   resetForm();
-  showToast('🗑 Deleted order for ' + myEntry[1].name);
+  showToast('🗑 Deleted all orders for ' + name);
 };
 
 // ── Join ───────────────────────────────────────────────────────────────
@@ -932,19 +1039,13 @@ async function joinOrder(foodKey) {
   const snap = await get(ordersRef);
   const existing = snap.exists() ? Object.values(snap.val()) : [];
   if (existing.find(o => o.foodKey === foodKey && o.name.toLowerCase() === name.toLowerCase())) {
-    showToast(name + ' already has this order!'); return;
-  }
-  if (existing.find(o => o.name.toLowerCase() === name.toLowerCase())) {
-    showToast('You already have an order — use Replace My Order to change it'); return;
+    showToast(name + ' already has this dish!'); return;
   }
   const menuItem = lastMenu.find(m => m.key === foodKey);
   if (!menuItem) { showToast('Menu item not found'); return; }
   const entry = { name, foodKey: menuItem.key, foodName: menuItem.name, qty: 1, ts: Date.now() };
   if (menuItem.price) entry.foodPrice = menuItem.price;
   await push(ordersRef, entry);
-  nameInput.value = '';
-  document.getElementById('adminTabBtn').style.display = 'none';
-  updateFormMode();
   showToast('✓ ' + name + ' joined: ' + menuItem.name);
 }
 
@@ -960,11 +1061,13 @@ window.clearOrders = async function() {
 function resetForm() {
   document.getElementById('nameInput').value = '';
   document.getElementById('adminTabBtn').style.display = 'none';
-  selectedFood = null; currentQty = 1;
+  selectedFood = null; currentQty = 1; cart = {};
   document.getElementById('qtyDisplay').textContent = '1';
   document.getElementById('qtySelectorWrap').style.display = 'none';
   document.querySelectorAll('.food-tile').forEach(t => t.classList.remove('selected'));
   document.getElementById('priceSummary').classList.remove('visible');
+  renderFoodGrid();
+  renderCartSummary();
   document.getElementById('nameInput').focus();
   updateFormMode();
 }
