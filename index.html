@@ -96,41 +96,26 @@ body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh;
 .form-block input:focus { border-color: #c8922a; box-shadow: 0 0 0 3px rgba(200,146,42,0.12); background: #fff; }
 .edit-hint { margin-top: 8px; font-size: 11px; color: #c8922a; font-style: italic; display: none; line-height: 1.4; }
 
-/* Food tiles */
+/* Food tiles — multi-select */
 .food-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-.food-tile { border: 2px solid #e2cfa8; border-radius: 8px; padding: 8px 14px; cursor: pointer; transition: all 0.15s; background: #fffcf5; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 90px; }
+.food-tile { border: 2px solid #e2cfa8; border-radius: 8px; padding: 8px 14px; cursor: pointer; transition: all 0.15s; background: #fffcf5; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 90px; position: relative; }
 .food-tile:hover { border-color: #c8922a; background: #fff8ec; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(200,146,42,0.15); }
-.food-tile.selected { border-color: #c8922a; background: #fff3d6; box-shadow: 0 0 0 3px rgba(200,146,42,0.2); }
+.food-tile.in-cart { border-color: #c8922a; background: #fff3d6; }
 .tile-name { font-size: 12px; font-weight: 700; color: #1a1208; }
-.food-tile.selected .tile-name { color: #c8922a; }
+.food-tile.in-cart .tile-name { color: #c8922a; }
 .tile-price { font-size: 10px; color: #b8956a; font-weight: 600; }
+.tile-qty-ctrl { display: flex; align-items: center; gap: 0; margin-top: 6px; border: 1px solid #e2cfa8; border-radius: 4px; overflow: hidden; background: white; }
+.tqb { width: 24px; height: 24px; background: #fffcf5; border: none; color: #c8922a; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; font-family: inherit; transition: background 0.1s; padding: 0; }
+.tqb:hover { background: #fff3d6; }
+.tqd { width: 28px; text-align: center; font-size: 13px; font-weight: 700; color: #1a1208; border-left: 1px solid #e2cfa8; border-right: 1px solid #e2cfa8; line-height: 24px; }
 .no-menu-msg { font-size: 13px; color: #c8b08a; font-style: italic; padding: 8px 0; }
 
-/* Quantity selector */
-.qty-selector { display: flex; align-items: center; gap: 10px; margin-top: 12px; }
-.qty-selector label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #b8956a; font-weight: 700; }
-.qty-control { display: flex; align-items: center; gap: 0; border: 1px solid #e2cfa8; border-radius: 4px; overflow: hidden; }
-.qty-btn { width: 32px; height: 32px; background: #fffcf5; border: none; color: #c8922a; font-size: 18px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; font-family: inherit; }
-.qty-btn:hover { background: #fff3d6; }
-.qty-display { width: 36px; text-align: center; font-size: 15px; font-weight: 700; color: #1a1208; background: #fff; border-left: 1px solid #e2cfa8; border-right: 1px solid #e2cfa8; line-height: 32px; }
-
-/* Price summary box */
-.price-summary { background: #fffcf5; border: 1px solid #e2cfa8; border-radius: 6px; padding: 12px 14px; margin-top: 12px; display: none; }
-.price-summary.visible { display: block; }
-.ps-row { display: flex; justify-content: space-between; font-size: 12px; color: #7a6040; margin-bottom: 4px; font-family: 'Inter', sans-serif; }
-.ps-row:last-child { margin-bottom: 0; padding-top: 6px; border-top: 1px dashed #e2cfa8; font-weight: 700; color: #1a1208; font-size: 13px; }
-/* Tile qty controls */
-.tile-qty-controls { display: flex; align-items: center; gap: 0; margin-top: 6px; border: 1px solid #e2cfa8; border-radius: 4px; overflow: hidden; }
-
 /* Cart summary */
-.cart-item-row { display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #fff8ec; border: 1px solid #e8d9b0; border-radius: 6px; margin-bottom: 5px; }
-.cart-item-name { flex: 1; font-size: 13px; font-weight: 700; color: #1a1208; font-family: 'Playfair Display', serif; }
-.cart-item-qty { display: flex; align-items: center; gap: 0; border: 1px solid #e2cfa8; border-radius: 4px; overflow: hidden; flex-shrink: 0; }
-.cart-item-price { font-size: 12px; font-weight: 700; color: #c8922a; flex-shrink: 0; min-width: 60px; text-align: right; }
-.cart-item-remove { cursor: pointer; color: #b8956a; font-size: 13px; margin-left: 2px; flex-shrink: 0; transition: color 0.15s; }
-.cart-item-remove:hover { color: #c0392b; }
-
-.ps-val { font-weight: 600; color: #c8922a; }
+.cart-summary { background: #fffcf5; border: 1px solid #e2cfa8; border-radius: 6px; padding: 10px 14px; margin-top: 12px; display: none; }
+.cart-summary.visible { display: block; }
+.cs-row { display: flex; justify-content: space-between; font-size: 12px; color: #7a6040; margin-bottom: 3px; font-family: 'Inter', sans-serif; }
+.cs-row.total { margin-top: 6px; padding-top: 6px; border-top: 1px dashed #e2cfa8; font-weight: 700; color: #1a1208; font-size: 13px; }
+.cs-val { font-weight: 600; color: #c8922a; }
 
 .btn-submit { width: 100%; padding: 12px; background: #c8922a; color: #fff; border: none; border-radius: 4px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; cursor: pointer; transition: all 0.15s; margin-top: 8px; }
 .btn-submit:first-child { margin-top: 0; }
@@ -261,8 +246,18 @@ body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh;
 .ar-input:focus { border-color: #5BAD8F; }
 .ar-input::placeholder { color: #3a5a44; }
 
-/* Toast */
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1c1208; color: #f5e6c8; padding: 12px 24px; border-radius: 4px; font-size: 13px; border-left: 3px solid #c8922a; transition: transform 0.3s ease; z-index: 999; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+/* History */
+.history-day { margin-bottom: 20px; }
+.history-day-title { font-family: 'Playfair Display', serif; font-size: 16px; color: #f5e6c8; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #c8922a33; display: flex; align-items: center; gap: 10px; }
+.history-day-title .hd-count { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; background: #c8922a33; color: #c8922a; padding: 2px 10px; border-radius: 20px; }
+.history-table { width: 100%; border-collapse: collapse; }
+.history-table th { text-align: left; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #4a7a5a; font-weight: 700; padding: 6px 10px; border-bottom: 1px solid #2d4a38; font-family: 'Inter', sans-serif; }
+.history-table td { padding: 8px 10px; font-size: 13px; color: #a8dfc4; border-bottom: 1px solid #1a2e20; font-family: 'Inter', sans-serif; vertical-align: top; }
+.history-table tr:last-child td { border-bottom: none; }
+.history-table td.ht-name { font-weight: 700; color: #f5e6c8; font-family: 'Playfair Display', serif; }
+.history-table td.ht-price { color: #c8922a; font-weight: 600; text-align: right; }
+.history-totals { display: flex; flex-wrap: wrap; gap: 16px; padding: 10px 10px 4px; font-size: 12px; color: #5BAD8F; font-family: 'Inter', sans-serif; }
+.history-totals span { font-weight: 700; color: #a8dfc4; } position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1c1208; color: #f5e6c8; padding: 12px 24px; border-radius: 4px; font-size: 13px; border-left: 3px solid #c8922a; transition: transform 0.3s ease; z-index: 999; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
 .toast.show { transform: translateX(-50%) translateY(0); }
 
 @media(max-width:560px) {
@@ -374,30 +369,13 @@ body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh;
             <div class="edit-hint" id="editHint">✏️ You have an order — pick a new meal to replace, or delete</div>
           </div>
 
-          <!-- Meal + Qty -->
+          <!-- Meal picker — multi-select with per-tile qty -->
           <div class="form-block">
             <label>Choose your meals</label>
             <div class="food-grid" id="foodGrid">
               <div class="no-menu-msg">Add items to the menu first</div>
             </div>
-            <div class="qty-selector" id="qtySelectorWrap" style="display:none;">
-              <label>Quantity</label>
-              <div class="qty-control">
-                <button class="qty-btn" onclick="changeQty(-1)">−</button>
-                <div class="qty-display" id="qtyDisplay">1</div>
-                <button class="qty-btn" onclick="changeQty(1)">+</button>
-              </div>
-            </div>
-            <!-- Cart summary -->
-            <div id="cartSummaryWrap" style="display:none;margin-top:12px;">
-              <div style="font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#b8956a;font-weight:700;margin-bottom:7px;">🛒 Your cart</div>
-              <div id="cartItemsList"></div>
-            </div>
-            <div class="price-summary" id="priceSummary">
-              <div class="ps-row"><span>Meal total</span><span class="ps-val" id="psMeal">—</span></div>
-              <div class="ps-row"><span>Delivery share</span><span class="ps-val" id="psDelivery">—</span></div>
-              <div class="ps-row"><span>Your total</span><span class="ps-val" id="psTotal">—</span></div>
-            </div>
+            <div class="cart-summary" id="cartSummary"></div>
           </div>
 
           <!-- Actions -->
@@ -514,9 +492,15 @@ body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh;
         <button class="btn-admin btn-green" onclick="addRestaurant()">+ Add Restaurant</button>
       </div>
 
-    </div>
-  </div>
-</div><!-- end tab-admin -->
+      <!-- History -->
+      <div class="section-heading" style="margin-top:32px;margin-bottom:16px;">
+        <div class="sh-line"></div><span class="sh-icon" style="color:#c8922a;">📋</span>
+        <span class="sh-text" style="color:#a8dfc4;">Order History (Last 3 Days)</span>
+        <span class="sh-icon" style="color:#c8922a;">📋</span><div class="sh-line"></div>
+      </div>
+      <div id="historyList">
+        <p style="color:#3a5a44;font-size:13px;font-style:italic;">No history yet — cleared orders will appear here</p>
+      </div>
 
 <div class="toast" id="toast"></div>
 
@@ -535,14 +519,14 @@ const ordersRef      = ref(db, 'orders');
 const menuRef        = ref(db, 'menu');
 const settingsRef    = ref(db, 'settings');
 const restaurantsRef = ref(db, 'restaurants');
+const historyRef     = ref(db, 'history');
 
 const ADMINS = ['affaneh0', 'aws0', 'waleed0'];
 function isAdmin(n) { return ADMINS.includes((n||'').trim().toLowerCase()); }
 
 let lastOrders = [], lastMenu = [], lastSettings = {}, lastRestaurants = {};
-let selectedFood = null, currentQty = 1;
-// Multi-item cart: { [foodKey]: { food, qty } }
-let cart = {};
+// cart: Map of foodKey → { foodKey, foodName, foodPrice, qty }
+let cart = new Map();
 
 // ── Toast ──────────────────────────────────────────────────────────────
 function showToast(msg) {
@@ -569,7 +553,6 @@ window.switchTab = function(tab) {
 function getTypedName() { return document.getElementById('nameInput').value.trim(); }
 function findMyOrder(name) {
   if (!name) return null;
-  // Returns the first order entry for this person (used to detect edit mode)
   return lastOrders.find(o => o.name.toLowerCase() === name.toLowerCase()) || null;
 }
 
@@ -578,114 +561,55 @@ document.getElementById('nameInput').addEventListener('input', () => {
   document.getElementById('adminTabBtn').style.display = isAdmin(name) ? 'flex' : 'none';
   applyLockUI(!!lastSettings.menuLocked);
   applyOrdersLockUI(!!lastSettings.ordersLocked);
-  const myOrder = findMyOrder(name);
-  if (myOrder && cartIsEmpty()) prefillCartFromOrder(name);
-  if (!myOrder) { cart = {}; renderFoodGrid(); renderCartSummary(); updatePriceSummary(); }
   updateFormMode();
 });
 
 function updateFormMode() {
   const name = getTypedName();
-  const myOrder = findMyOrder(name);
-  document.getElementById('submitBtn').style.display  = myOrder ? 'none'  : 'block';
-  document.getElementById('replaceBtn').style.display = myOrder ? 'block' : 'none';
-  document.getElementById('deleteBtn').style.display  = myOrder ? 'block' : 'none';
-  document.getElementById('editHint').style.display   = myOrder ? 'block' : 'none';
+  const myOrders = lastOrders.filter(o => o.name.toLowerCase() === name.toLowerCase());
+  const hasOrder = myOrders.length > 0;
+  document.getElementById('submitBtn').style.display  = hasOrder ? 'none'  : 'block';
+  document.getElementById('replaceBtn').style.display = hasOrder ? 'block' : 'none';
+  document.getElementById('deleteBtn').style.display  = hasOrder ? 'block' : 'none';
+  document.getElementById('editHint').style.display   = hasOrder ? 'block' : 'none';
   document.getElementById('clearBtn').style.display   = isAdmin(name) ? 'block' : 'none';
-  updatePriceSummary();
+  updateCartSummary();
   renderOrders(lastOrders);
 }
 
-// Pre-populate cart when user has existing order (for replace flow)
-function prefillCartFromOrder(name) {
-  if (!name) return;
-  cart = {};
-  const myOrders = lastOrders.filter(o => o.name.toLowerCase() === name.toLowerCase());
-  myOrders.forEach(o => {
-    const food = lastMenu.find(m => m.key === o.foodKey);
-    if (food) cart[food.key] = { food, qty: o.qty || 1 };
+function updateCartSummary() {
+  const cs = document.getElementById('cartSummary');
+  if (!cs) return;
+  if (!cart.size) { cs.classList.remove('visible'); cs.innerHTML = ''; return; }
+
+  const deliveryFee   = parseFloat(lastSettings.deliveryFee || 0);
+  const uniquePeople  = countUniquePeople();
+  // +1 because current person not yet on board (for new orders); for replace, they're already counted
+  const peopleForSplit = Math.max(1, uniquePeople + (getTypedName() && !lastOrders.find(o => o.name.toLowerCase() === getTypedName().toLowerCase()) ? 1 : 0));
+  const deliverySplit = deliveryFee > 0 ? deliveryFee / peopleForSplit : 0;
+
+  let rows = '';
+  let mealTotal = 0;
+  cart.forEach(item => {
+    const lineTotal = item.foodPrice ? item.foodPrice * item.qty : null;
+    if (lineTotal) mealTotal += lineTotal;
+    rows += `<div class="cs-row">
+      <span>${esc(item.foodName)} ×${item.qty}</span>
+      <span class="cs-val">${lineTotal ? lineTotal.toFixed(3) + ' JD' : '—'}</span>
+    </div>`;
   });
-  renderFoodGrid();
-  renderCartSummary();
-  updatePriceSummary();
-}
 
-// ── Qty (per-tile inline controls) ────────────────────────────────────
-window.changeQty = function(delta) {
-  currentQty = Math.max(1, currentQty + delta);
-  document.getElementById('qtyDisplay').textContent = currentQty;
-  updatePriceSummary();
-};
-
-// Change qty for a specific cart item via the inline ± buttons on the tile
-window.changeTileQty = function(foodKey, delta) {
-  if (!cart[foodKey]) return;
-  const newQty = Math.max(1, cart[foodKey].qty + delta);
-  cart[foodKey].qty = newQty;
-  // Update the displayed number on the tile
-  const el = document.querySelector(`.food-tile[data-key="${foodKey}"] .tile-qty-display`);
-  if (el) el.textContent = newQty;
-  updatePriceSummary();
-  renderCartSummary();
-};
-
-// Toggle a food tile in/out of cart
-window.toggleCartItem = function(foodKey) {
-  if (cart[foodKey]) {
-    delete cart[foodKey];
-  } else {
-    const food = lastMenu.find(m => m.key === foodKey);
-    if (food) cart[foodKey] = { food, qty: 1 };
+  const hasPrice = mealTotal > 0 || deliverySplit > 0;
+  if (hasPrice) {
+    rows += `<div class="cs-row" style="padding-top:4px;border-top:1px dashed #e2cfa8;margin-top:4px;font-size:11px;color:#b8956a;">
+      <span>Delivery share</span><span class="cs-val">${deliverySplit > 0 ? '+' + deliverySplit.toFixed(3) + ' JD' : '—'}</span>
+    </div>`;
+    const grandYou = mealTotal + deliverySplit;
+    rows += `<div class="cs-row total"><span>Your total</span><span class="cs-val">${grandYou.toFixed(3)} JD</span></div>`;
   }
-  renderFoodGrid();
-  renderCartSummary();
-  updatePriceSummary();
-};
 
-function cartIsEmpty() { return Object.keys(cart).length === 0; }
-
-function updatePriceSummary() {
-  const ps = document.getElementById('priceSummary');
-  if (cartIsEmpty()) { ps.classList.remove('visible'); return; }
-
-  const deliveryFee = parseFloat(lastSettings.deliveryFee || 0);
-  const peopleCount = countUniquePeople();
-
-  let mealTotal = 0, hasPrices = false;
-  Object.values(cart).forEach(({ food, qty }) => {
-    if (food.price) { mealTotal += food.price * qty; hasPrices = true; }
-  });
-
-  const deliverySplit = (deliveryFee > 0 && peopleCount >= 0)
-    ? deliveryFee / (peopleCount + 1) : null;
-
-  const hasPricing = hasPrices || deliverySplit !== null;
-  if (!hasPricing) { ps.classList.remove('visible'); return; }
-
-  ps.classList.add('visible');
-  document.getElementById('psMeal').textContent     = hasPrices ? mealTotal.toFixed(3) + ' JD' : '—';
-  document.getElementById('psDelivery').textContent = deliverySplit !== null ? deliverySplit.toFixed(3) + ' JD' : '—';
-  const total = mealTotal + (deliverySplit || 0);
-  document.getElementById('psTotal').textContent    = hasPricing ? total.toFixed(3) + ' JD' : '—';
-}
-
-function renderCartSummary() {
-  const wrap = document.getElementById('cartSummaryWrap');
-  const list = document.getElementById('cartItemsList');
-  if (!wrap || !list) return;
-  if (cartIsEmpty()) { wrap.style.display = 'none'; return; }
-  wrap.style.display = 'block';
-  list.innerHTML = Object.values(cart).map(({ food, qty }) => `
-    <div class="cart-item-row">
-      <span class="cart-item-name">${esc(food.name)}</span>
-      <div class="cart-item-qty">
-        <button class="qty-btn" style="width:26px;height:26px;font-size:15px;" onclick="changeTileQty('${esc(food.key)}', -1)">−</button>
-        <span class="qty-display" style="width:28px;line-height:26px;font-size:13px;">${qty}</span>
-        <button class="qty-btn" style="width:26px;height:26px;font-size:15px;" onclick="changeTileQty('${esc(food.key)}', 1)">+</button>
-      </div>
-      ${food.price ? `<span class="cart-item-price">${(food.price * qty).toFixed(3)} JD</span>` : ''}
-      <span class="cart-item-remove" onclick="toggleCartItem('${esc(food.key)}')" title="Remove">✕</span>
-    </div>`).join('');
+  cs.innerHTML = rows;
+  cs.classList.add('visible');
 }
 
 function countUniquePeople() {
@@ -720,24 +644,18 @@ window.saveOrdersLockState = function() {
 function applyOrdersLockUI(locked) {
   const banner   = document.getElementById('ordersLockBanner');
   const foodGrid = document.getElementById('foodGrid');
-  const qtyWrap  = document.getElementById('qtySelectorWrap');
-  const submitBtn  = document.getElementById('submitBtn');
-  const replaceBtn = document.getElementById('replaceBtn');
   const isAdminUser = isAdmin(getTypedName());
 
   if (locked && !isAdminUser) {
     banner.style.display     = 'flex';
     foodGrid.style.opacity   = '0.35';
     foodGrid.style.pointerEvents = 'none';
-    if (qtyWrap) { qtyWrap.style.opacity = '0.35'; qtyWrap.style.pointerEvents = 'none'; }
-    if (submitBtn)  submitBtn.style.display  = 'none';
-    if (replaceBtn) replaceBtn.style.display = 'none';
+    document.getElementById('submitBtn').style.display  = 'none';
+    document.getElementById('replaceBtn').style.display = 'none';
   } else {
-    banner.style.display     = 'none';
-    foodGrid.style.opacity   = '';
+    banner.style.display = 'none';
+    foodGrid.style.opacity = '';
     foodGrid.style.pointerEvents = '';
-    if (qtyWrap) { qtyWrap.style.opacity = ''; qtyWrap.style.pointerEvents = ''; }
-    // restore buttons via updateFormMode
     updateFormMode();
   }
   const toggle = document.getElementById('ordersLockToggle');
@@ -815,7 +733,6 @@ window.deleteMainMenuItem = async function(key) {
     showToast('Cannot delete — restaurant menu is active'); return;
   }
   await remove(ref(db, 'menu/' + key));
-  if (cart[key]) { delete cart[key]; renderCartSummary(); updatePriceSummary(); }
   if (selectedFood && selectedFood.key === key) { selectedFood = null; currentQty = 1; }
   showToast('Removed from menu');
 };
@@ -837,37 +754,50 @@ function renderMenu(menu) {
     );
   }
 
-  // Clean cart of removed items
-  Object.keys(cart).forEach(k => { if (!menu.find(m => m.key === k)) delete cart[k]; });
-
-  renderFoodGrid();
-  renderCartSummary();
-}
-
-function renderFoodGrid() {
-  const menu = lastMenu;
   const grid = document.getElementById('foodGrid');
   if (!menu.length) {
     grid.innerHTML = '<div class="no-menu-msg">Add items to the menu first</div>';
-    document.getElementById('qtySelectorWrap').style.display = 'none';
     return;
   }
-  // Hide legacy qty selector — we use inline per-tile controls now
-  document.getElementById('qtySelectorWrap').style.display = 'none';
 
   grid.innerHTML = menu.map(m => {
-    const inCart = !!cart[m.key];
-    const qty    = inCart ? cart[m.key].qty : 1;
-    return `<div class="food-tile ${inCart ? 'selected' : ''}" data-key="${esc(m.key)}" onclick="toggleCartItem('${esc(m.key)}')">
+    const cartItem = cart.get(m.key);
+    const qty = cartItem ? cartItem.qty : 0;
+    const inCart = qty > 0;
+    return `<div class="food-tile ${inCart ? 'in-cart' : ''}" data-key="${esc(m.key)}">
       <span class="tile-name">${esc(m.name)}</span>
       ${m.price ? `<span class="tile-price">${m.price.toFixed(3)} JD</span>` : ''}
-      ${inCart ? `<div class="tile-qty-controls" onclick="event.stopPropagation()">
-        <button class="qty-btn" style="width:24px;height:24px;font-size:14px;border-radius:3px;" onclick="changeTileQty('${esc(m.key)}',-1)">−</button>
-        <span class="tile-qty-display qty-display" style="width:28px;line-height:24px;font-size:13px;">${qty}</span>
-        <button class="qty-btn" style="width:24px;height:24px;font-size:14px;border-radius:3px;" onclick="changeTileQty('${esc(m.key)}',1)">+</button>
-      </div>` : ''}
+      <div class="tile-qty-ctrl">
+        <button class="tqb" data-key="${esc(m.key)}" data-delta="-1">−</button>
+        <span class="tqd" id="tqd-${esc(m.key)}">${qty}</span>
+        <button class="tqb" data-key="${esc(m.key)}" data-delta="1">+</button>
+      </div>
     </div>`;
   }).join('');
+
+  // Stop tile click from toggling when clicking the qty buttons
+  grid.querySelectorAll('.tqb').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const key   = btn.dataset.key;
+      const delta = parseInt(btn.dataset.delta);
+      const item  = lastMenu.find(m => m.key === key);
+      if (!item) return;
+      const cur = cart.has(key) ? cart.get(key).qty : 0;
+      const next = Math.max(0, cur + delta);
+      if (next === 0) {
+        cart.delete(key);
+      } else {
+        cart.set(key, { foodKey: key, foodName: item.name, foodPrice: item.price || null, qty: next });
+      }
+      // Update display inline without full re-render
+      const dispEl = document.getElementById('tqd-' + key);
+      if (dispEl) dispEl.textContent = next;
+      const tile = grid.querySelector(`.food-tile[data-key="${key}"]`);
+      if (tile) tile.classList.toggle('in-cart', next > 0);
+      updateCartSummary();
+    });
+  });
 }
 
 // ── Orders ─────────────────────────────────────────────────────────────
@@ -969,49 +899,45 @@ function renderOrders(orders) {
 window.submitOrder = async function() {
   const nameInput = document.getElementById('nameInput');
   const name = nameInput.value.trim();
-  if (!name)          { showToast('Enter your name first'); nameInput.focus(); return; }
-  if (cartIsEmpty())  { showToast('Pick at least one meal first'); return; }
+  if (!name)       { showToast('Enter your name first'); nameInput.focus(); return; }
+  if (!cart.size)  { showToast('Add at least one meal first'); return; }
   if (lastSettings.ordersLocked && !isAdmin(name)) { showToast('Ordering is closed by admin'); return; }
-  const snap = await get(ordersRef);
-  const existing = snap.exists() ? Object.values(snap.val()) : [];
-  if (existing.find(o => o.name.toLowerCase() === name.toLowerCase())) {
-    showToast(name + ' already has an order — use Replace My Order'); return;
-  }
-  const items = Object.values(cart);
-  for (const { food, qty } of items) {
-    const entry = { name, foodKey: food.key, foodName: food.name, qty, ts: Date.now() };
-    if (food.price) entry.foodPrice = food.price;
+
+  const savedName = name;
+  const items = [...cart.values()];
+  for (const item of items) {
+    const entry = { name, foodKey: item.foodKey, foodName: item.foodName, qty: item.qty, ts: Date.now() };
+    if (item.foodPrice) entry.foodPrice = item.foodPrice;
     await push(ordersRef, entry);
   }
-  const summary = items.map(({food, qty}) => food.name + (qty > 1 ? ' ×'+qty : '')).join(', ');
-  showToast('✓ ' + name + ': ' + summary);
   resetForm();
+  showToast('✓ ' + savedName + ': ' + items.map(i => i.foodName + (i.qty > 1 ? ' ×' + i.qty : '')).join(', '));
 };
 
 // ── Replace ────────────────────────────────────────────────────────────
 window.replaceOrder = async function() {
   const name = getTypedName();
-  if (!name)         { showToast('Enter your name first'); return; }
-  if (cartIsEmpty()) { showToast('Pick at least one new meal first'); return; }
+  if (!name)      { showToast('Enter your name first'); return; }
+  if (!cart.size) { showToast('Add at least one meal to replace with'); return; }
   if (lastSettings.ordersLocked && !isAdmin(name)) { showToast('Ordering is closed by admin'); return; }
+
   const snap = await get(ordersRef);
   if (!snap.exists()) { showToast('No orders found'); return; }
+  // Delete all existing entries for this person
   const entries = Object.entries(snap.val());
-  const myEntries = entries.filter(([,v]) => v.name.toLowerCase() === name.toLowerCase());
-  if (!myEntries.length) { showToast('No order found for ' + name); return; }
-  // Remove all existing entries for this person
-  for (const [key] of myEntries) await remove(ref(db, 'orders/' + key));
-  // Add new cart items
-  const ts = myEntries[0][1].ts; // preserve original timestamp
-  const items = Object.values(cart);
-  for (const { food, qty } of items) {
-    const upd = { name, foodKey: food.key, foodName: food.name, qty, ts };
-    if (food.price) upd.foodPrice = food.price;
-    await push(ordersRef, upd);
+  const mine = entries.filter(([,v]) => v.name.toLowerCase() === name.toLowerCase());
+  for (const [key] of mine) await remove(ref(db, 'orders/' + key));
+
+  // Push new cart (preserve name casing from existing entry)
+  const originalName = mine.length ? mine[0][1].name : name;
+  const items = [...cart.values()];
+  for (const item of items) {
+    const entry = { name: originalName, foodKey: item.foodKey, foodName: item.foodName, qty: item.qty, ts: Date.now() };
+    if (item.foodPrice) entry.foodPrice = item.foodPrice;
+    await push(ordersRef, entry);
   }
-  const summary = items.map(({food, qty}) => food.name + (qty > 1 ? ' ×'+qty : '')).join(', ');
-  showToast('✓ Updated for ' + name + ': ' + summary);
   resetForm();
+  showToast('✓ Updated for ' + originalName + ': ' + items.map(i => i.foodName + (i.qty > 1 ? ' ×' + i.qty : '')).join(', '));
 };
 
 // ── Delete ─────────────────────────────────────────────────────────────
@@ -1021,13 +947,12 @@ window.deleteMyOrder = async function() {
   const snap = await get(ordersRef);
   if (!snap.exists()) { showToast('No orders found'); return; }
   const entries = Object.entries(snap.val());
-  const myEntries = entries.filter(([,v]) => v.name.toLowerCase() === name.toLowerCase());
-  if (!myEntries.length) { showToast('No order found for ' + name); return; }
-  const dishes = [...new Set(myEntries.map(([,v]) => v.foodName))].join(', ');
-  if (!confirm('Delete all of ' + name + '\'s orders (' + dishes + ')?')) return;
-  for (const [key] of myEntries) await remove(ref(db, 'orders/' + key));
+  const mine = entries.filter(([,v]) => v.name.toLowerCase() === name.toLowerCase());
+  if (!mine.length) { showToast('No order found for ' + name); return; }
+  if (!confirm('Delete all orders for ' + mine[0][1].name + '?')) return;
+  for (const [key] of mine) await remove(ref(db, 'orders/' + key));
   resetForm();
-  showToast('🗑 Deleted all orders for ' + name);
+  showToast('🗑 All orders deleted for ' + mine[0][1].name);
 };
 
 // ── Join ───────────────────────────────────────────────────────────────
@@ -1046,28 +971,123 @@ async function joinOrder(foodKey) {
   const entry = { name, foodKey: menuItem.key, foodName: menuItem.name, qty: 1, ts: Date.now() };
   if (menuItem.price) entry.foodPrice = menuItem.price;
   await push(ordersRef, entry);
+  nameInput.value = '';
+  document.getElementById('adminTabBtn').style.display = 'none';
+  updateFormMode();
   showToast('✓ ' + name + ' joined: ' + menuItem.name);
 }
 
-// ── Clear ──────────────────────────────────────────────────────────────
+// ── Clear → Archive ────────────────────────────────────────────────────
 window.clearOrders = async function() {
   if (!isAdmin(getTypedName())) { showToast('Only admins can clear all orders'); return; }
-  if (!confirm('Clear ALL orders? Menu stays. Cannot be undone.')) return;
+  if (!lastOrders.length) { showToast('Nothing to clear'); return; }
+  if (!confirm('Clear board? Orders will be saved to history for 3 days.')) return;
+
+  // Build date key: YYYY-MM-DD in local time
+  const now = new Date();
+  const dateKey = now.getFullYear() + '-' +
+    String(now.getMonth() + 1).padStart(2,'0') + '-' +
+    String(now.getDate()).padStart(2,'0');
+
+  // Archive snapshot: group by person, include all meals
+  const snapshot = {
+    clearedAt: now.toISOString(),
+    clearedBy: getTypedName(),
+    deliveryFee: lastSettings.deliveryFee || 0,
+    orders: lastOrders.map(o => ({
+      name: o.name, foodName: o.foodName, qty: o.qty || 1, foodPrice: o.foodPrice || null
+    }))
+  };
+
+  const historyDayRef = ref(db, 'history/' + dateKey);
+  await push(historyDayRef, snapshot);
+
+  // Purge entries older than 3 days
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 3);
+  const histSnap = await get(ref(db, 'history'));
+  if (histSnap.exists()) {
+    for (const dayKey of Object.keys(histSnap.val())) {
+      if (new Date(dayKey) < cutoff) await remove(ref(db, 'history/' + dayKey));
+    }
+  }
+
   await remove(ordersRef);
-  showToast('Orders cleared');
+  showToast('✓ Board cleared — saved to history');
 };
+
+// ── Render History ─────────────────────────────────────────────────────
+function renderHistory(historyData) {
+  const container = document.getElementById('historyList');
+  if (!container) return;
+
+  if (!historyData || !Object.keys(historyData).length) {
+    container.innerHTML = '<p style="color:#3a5a44;font-size:13px;font-style:italic;">No history yet — cleared orders will appear here</p>';
+    return;
+  }
+
+  // Sort days descending (most recent first)
+  const days = Object.entries(historyData).sort((a,b) => b[0].localeCompare(a[0]));
+
+  container.innerHTML = days.map(([dateKey, sessions]) => {
+    // Each day may have multiple clears (multiple pushes)
+    const allOrders = [];
+    let lastClearedBy = '';
+    Object.values(sessions).forEach(session => {
+      lastClearedBy = session.clearedBy || '';
+      (session.orders || []).forEach(o => allOrders.push({...o, deliveryFee: session.deliveryFee || 0, clearedAt: session.clearedAt}));
+    });
+
+    // Group by name for display
+    const byName = {};
+    allOrders.forEach(o => {
+      if (!byName[o.name]) byName[o.name] = [];
+      byName[o.name].push(o);
+    });
+
+    const uniquePeople = Object.keys(byName).length;
+    const foodTotal = allOrders.reduce((s,o) => s + ((o.foodPrice || 0) * (o.qty || 1)), 0);
+
+    // Format date
+    const d = new Date(dateKey + 'T12:00:00');
+    const dayLabel = d.toLocaleDateString(undefined, { weekday:'long', month:'short', day:'numeric' });
+
+    const rows = Object.entries(byName).map(([name, items]) => {
+      const personTotal = items.reduce((s,o) => s + ((o.foodPrice||0)*(o.qty||1)), 0);
+      const meals = items.map(o => esc(o.foodName) + (o.qty > 1 ? ' ×' + o.qty : '')).join(', ');
+      return `<tr>
+        <td class="ht-name">${esc(name)}</td>
+        <td>${meals}</td>
+        <td class="ht-price">${personTotal > 0 ? personTotal.toFixed(3) + ' JD' : '—'}</td>
+      </tr>`;
+    }).join('');
+
+    return `<div class="history-day">
+      <div class="history-day-title">
+        ${esc(dayLabel)}
+        <span class="hd-count">${uniquePeople} people</span>
+      </div>
+      <table class="history-table">
+        <thead><tr>
+          <th>Name</th><th>Meals</th><th style="text-align:right;">Total</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="history-totals">
+        Food total: <span>${foodTotal > 0 ? foodTotal.toFixed(3) + ' JD' : '—'}</span>
+        ${lastClearedBy ? '&nbsp;· Cleared by: <span>' + esc(lastClearedBy) + '</span>' : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
 
 // ── Reset form ─────────────────────────────────────────────────────────
 function resetForm() {
   document.getElementById('nameInput').value = '';
   document.getElementById('adminTabBtn').style.display = 'none';
-  selectedFood = null; currentQty = 1; cart = {};
-  document.getElementById('qtyDisplay').textContent = '1';
-  document.getElementById('qtySelectorWrap').style.display = 'none';
-  document.querySelectorAll('.food-tile').forEach(t => t.classList.remove('selected'));
-  document.getElementById('priceSummary').classList.remove('visible');
-  renderFoodGrid();
-  renderCartSummary();
+  cart.clear();
+  renderMenu(lastMenu);
+  const cs = document.getElementById('cartSummary');
+  if (cs) { cs.classList.remove('visible'); cs.innerHTML = ''; }
   document.getElementById('nameInput').focus();
   updateFormMode();
 }
@@ -1278,7 +1298,7 @@ onValue(ref(db,'settings'), snap => {
   if (document.activeElement !== document.getElementById('deliveryFeeInput'))
     document.getElementById('deliveryFeeInput').value = df > 0 ? df : '';
 
-  updatePriceSummary();
+  updateCartSummary();
   renderOrders(lastOrders);
 });
 
@@ -1300,6 +1320,11 @@ onValue(ordersRef, snap => {
 onValue(restaurantsRef, snap => {
   lastRestaurants = snap.exists() ? snap.val() : {};
   renderRestaurants(lastRestaurants, lastSettings);
+});
+
+onValue(historyRef, snap => {
+  // Only render if admin tab is potentially visible
+  renderHistory(snap.exists() ? snap.val() : null);
 });
 </script>
 </body>
