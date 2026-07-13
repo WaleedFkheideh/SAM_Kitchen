@@ -1092,19 +1092,21 @@ window.clearOrders = async function() {
   showToast('✓ Board cleared — saved to history');
 };
 
-// ── Save per-day history fees ──────────────────────────────────────────
+// ── Save per-session history fees ──────────────────────────────────────
 window.saveHistoryFees = async function(dateKey, sessionKey) {
-  const dfEl = document.getElementById('hfr-df-' + dateKey);
-  const efEl = document.getElementById('hfr-ef-' + dateKey);
+  const dfEl = document.getElementById('hfr-df-' + sessionKey);
+  const efEl = document.getElementById('hfr-ef-' + sessionKey);
   if (!dfEl || !efEl) return;
   const df = parseFloat(dfEl.value) || 0;
   const ef = parseFloat(efEl.value) || 0;
   await set(ref(db, 'history/' + dateKey + '/' + sessionKey + '/deliveryFee'), df);
   await set(ref(db, 'history/' + dateKey + '/' + sessionKey + '/extraFees'),   ef);
-  showToast('✓ Fees updated for ' + dateKey);
+  showToast('✓ Fees updated');
 };
 
 // ── Render History ─────────────────────────────────────────────────────
+// Each session (clear event) renders as its own isolated card.
+// People, fees, and totals are never mixed across sessions.
 function renderHistory(historyData) {
   const container = document.getElementById('historyList');
   if (!container) return;
@@ -1114,42 +1116,41 @@ function renderHistory(historyData) {
     return;
   }
 
-  const days = Object.entries(historyData).sort((a,b) => b[0].localeCompare(a[0]));
-
-  container.innerHTML = days.map(([dateKey, sessions]) => {
-    // Aggregate all orders; use the last session's fees as the day's fees
-    const allOrders = [];
-    let lastClearedBy = '';
-    let lastSessionKey = '';
-    let dayDeliveryFee = 0;
-    let dayExtraFees   = 0;
-
-    Object.entries(sessions).forEach(([sKey, session]) => {
-      lastClearedBy  = session.clearedBy || '';
-      lastSessionKey = sKey;
-      // Use the fees from each session (last one wins for the editable fields)
-      dayDeliveryFee = parseFloat(session.deliveryFee || 0);
-      dayExtraFees   = parseFloat(session.extraFees   || 0);
-      (session.orders || []).forEach(o => allOrders.push({ ...o }));
+  // Flatten into individual sessions sorted newest first
+  const sessions = [];
+  Object.entries(historyData).forEach(([dateKey, daySessions]) => {
+    Object.entries(daySessions).forEach(([sessionKey, session]) => {
+      sessions.push({ dateKey, sessionKey, ...session });
     });
+  });
+  sessions.sort((a,b) => new Date(b.clearedAt) - new Date(a.clearedAt));
 
-    // Group by person name
+  container.innerHTML = sessions.map(session => {
+    const { dateKey, sessionKey, clearedBy, clearedAt, orders = [],
+            deliveryFee: df = 0, extraFees: ef = 0 } = session;
+
+    const dayDeliveryFee = parseFloat(df);
+    const dayExtraFees   = parseFloat(ef);
+    const totalFees      = dayDeliveryFee + dayExtraFees;
+
+    // Group THIS session's orders by person — no cross-contamination
     const byName = {};
-    allOrders.forEach(o => {
+    orders.forEach(o => {
       if (!byName[o.name]) byName[o.name] = [];
       byName[o.name].push(o);
     });
 
     const uniquePeople      = Object.keys(byName).length;
-    const totalFees         = dayDeliveryFee + dayExtraFees;
     const deliveryPerPerson = uniquePeople > 0 ? dayDeliveryFee / uniquePeople : 0;
     const extraPerPerson    = uniquePeople > 0 ? dayExtraFees   / uniquePeople : 0;
     const feesPerPerson     = uniquePeople > 0 ? totalFees      / uniquePeople : 0;
-    const foodTotal         = allOrders.reduce((s,o) => s + ((o.foodPrice||0)*(o.qty||1)), 0);
+    const foodTotal         = orders.reduce((s,o) => s + ((o.foodPrice||0)*(o.qty||1)), 0);
     const grandTotal        = foodTotal + totalFees;
 
-    const d = new Date(dateKey + 'T12:00:00');
-    const dayLabel = d.toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' });
+    // Format timestamp
+    const dt = new Date(clearedAt);
+    const dayLabel  = dt.toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' });
+    const timeLabel = dt.toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
 
     const rows = Object.entries(byName).map(([name, items]) => {
       const mealCost    = items.reduce((s,o) => s + ((o.foodPrice||0)*(o.qty||1)), 0);
@@ -1179,25 +1180,26 @@ function renderHistory(historyData) {
 
       <div class="history-card-header">
         <span class="hc-date">${esc(dayLabel)}</span>
+        <span style="font-size:12px;color:#c8a97a;font-family:'Inter',sans-serif;">${timeLabel}</span>
         <span class="hc-count">${uniquePeople} people</span>
-        ${lastClearedBy ? `<span class="hc-cleared">cleared by ${esc(lastClearedBy)}</span>` : ''}
+        ${clearedBy ? `<span class="hc-cleared">cleared by ${esc(clearedBy)}</span>` : ''}
       </div>
 
       <div class="history-fee-row">
         <span class="hfr-label">Delivery</span>
-        <input class="hfr-input" type="number" id="hfr-df-${dateKey}"
+        <input class="hfr-input" type="number" id="hfr-df-${sessionKey}"
           value="${dayDeliveryFee > 0 ? dayDeliveryFee : ''}"
           placeholder="0.000" min="0" step="0.001" />
         <span class="hfr-jd">JD</span>
         <div class="hfr-sep"></div>
         <span class="hfr-label">Extra fees</span>
-        <input class="hfr-input" type="number" id="hfr-ef-${dateKey}"
+        <input class="hfr-input" type="number" id="hfr-ef-${sessionKey}"
           value="${dayExtraFees > 0 ? dayExtraFees : ''}"
           placeholder="0.000" min="0" step="0.001" />
         <span class="hfr-jd">JD</span>
         <button class="hfr-save"
           data-datekey="${esc(dateKey)}"
-          data-sessionkey="${esc(lastSessionKey)}">
+          data-sessionkey="${esc(sessionKey)}">
           Update & Recalculate
         </button>
       </div>
@@ -1208,16 +1210,16 @@ function renderHistory(historyData) {
           <th>Meals</th>
           <th style="text-align:right;">Owes</th>
         </tr></thead>
-        <tbody>${rows}</tbody>
+        <tbody>${rows || '<tr><td colspan="3" style="color:#3a5a44;text-align:center;padding:16px;">No orders in this session</td></tr>'}</tbody>
       </table>
 
       <div class="history-card-footer">
-        <div class="hcf-item">Food total: <span>${foodTotal > 0 ? foodTotal.toFixed(3)+' JD' : '—'}</span></div>
+        <div class="hcf-item">Food: <span>${foodTotal > 0 ? foodTotal.toFixed(3)+' JD' : '—'}</span></div>
         <div class="hcf-item">Delivery: <span>${dayDeliveryFee > 0 ? dayDeliveryFee.toFixed(3)+' JD' : '—'}</span></div>
         <div class="hcf-item">Extra: <span>${dayExtraFees > 0 ? dayExtraFees.toFixed(3)+' JD' : '—'}</span></div>
         <div class="hcf-item" style="margin-left:auto;">
           <span style="font-size:14px;color:#e8c87a;font-weight:700;">
-            Grand total: ${grandTotal > 0 ? grandTotal.toFixed(3)+' JD' : '—'}
+            Grand: ${grandTotal > 0 ? grandTotal.toFixed(3)+' JD' : '—'}
           </span>
         </div>
       </div>
@@ -1225,7 +1227,7 @@ function renderHistory(historyData) {
     </div>`;
   }).join('');
 
-  // Attach save button events after render
+  // Attach save buttons
   container.querySelectorAll('.hfr-save').forEach(btn => {
     btn.addEventListener('click', () =>
       saveHistoryFees(btn.dataset.datekey, btn.dataset.sessionkey)
