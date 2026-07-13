@@ -505,17 +505,6 @@ body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh;
         </div>
       </div>
 
-      <!-- Fees row -->
-      <div class="delivery-row" style="margin-top:20px;flex-wrap:wrap;gap:16px;">
-        <label>Delivery Fee</label>
-        <input class="delivery-input" type="number" id="deliveryFeeInput" placeholder="0.000" min="0" step="0.001" />
-        <span class="delivery-suffix">JD</span>
-        <span style="width:1px;background:#2d4a38;align-self:stretch;"></span>
-        <label>Extra Fees</label>
-        <input class="delivery-input" type="number" id="extraFeesInput" placeholder="0.000" min="0" step="0.001" />
-        <span class="delivery-suffix">JD</span>
-        <button class="btn-admin btn-green" style="padding:9px 16px;" onclick="saveAllFees()">Save</button>
-      </div>
       <!-- Restaurant list -->
       <div class="section-heading" style="margin-bottom:16px;">
         <div class="sh-line"></div><span class="sh-icon" style="color:#5BAD8F;">🍴</span>
@@ -537,17 +526,6 @@ body { font-family: 'Inter', sans-serif; background: #0f0d0a; min-height: 100vh;
         <div class="sh-line"></div><span class="sh-icon" style="color:#c8922a;">📋</span>
         <span class="sh-text" style="color:#a8dfc4;">Order History (Last 3 Days)</span>
         <span class="sh-icon" style="color:#c8922a;">📋</span><div class="sh-line"></div>
-      </div>
-
-      <!-- Compact fees — syncs with main fields above -->
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;background:#1a2e20;border:1px solid #2d4a38;border-radius:6px;padding:10px 16px;flex-wrap:wrap;">
-        <span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#4a7a5a;font-weight:700;white-space:nowrap;">Delivery</span>
-        <input class="delivery-input" type="number" id="deliveryFeeInputHistory" placeholder="0.000" min="0" step="0.001" style="width:100px;" />
-        <span class="delivery-suffix">JD</span>
-        <span style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#4a7a5a;font-weight:700;white-space:nowrap;margin-left:8px;">Extra Fees</span>
-        <input class="delivery-input" type="number" id="extraFeesInputHistory" placeholder="0.000" min="0" step="0.001" style="width:100px;" />
-        <span class="delivery-suffix">JD</span>
-        <button class="btn-admin btn-green" style="padding:7px 14px;font-size:11px;" onclick="saveAllFeesFromHistory()">Save</button>
       </div>
 
       <div id="historyList">
@@ -761,26 +739,6 @@ function applyLockUI(manualLocked) {
 
   document.getElementById('lockToggle').checked = manualLocked;
 }
-
-// ── Delivery fee ───────────────────────────────────────────────────────
-window.saveDeliveryFee = function() { saveAllFees(); };
-
-window.saveAllFees = function() {
-  const delivery = parseFloat(document.getElementById('deliveryFeeInput').value) || 0;
-  const extra    = parseFloat(document.getElementById('extraFeesInput').value)   || 0;
-  set(ref(db,'settings/deliveryFee'), delivery);
-  set(ref(db,'settings/extraFees'),   extra);
-  showToast('✓ Fees saved — delivery: ' + delivery.toFixed(3) + ' JD, extra: ' + extra.toFixed(3) + ' JD');
-};
-
-window.saveDeliveryFeeFromHistory   = function() { saveAllFeesFromHistory(); };
-window.saveAllFeesFromHistory = function() {
-  const delivery = parseFloat(document.getElementById('deliveryFeeInputHistory').value) || 0;
-  const extra    = parseFloat(document.getElementById('extraFeesInputHistory').value)   || 0;
-  set(ref(db,'settings/deliveryFee'), delivery);
-  set(ref(db,'settings/extraFees'),   extra);
-  showToast('✓ Fees saved — delivery: ' + delivery.toFixed(3) + ' JD, extra: ' + extra.toFixed(3) + ' JD');
-};
 
 // ── Main menu (direct edit) ────────────────────────────────────────────
 window.addMainMenuItem = async function() {
@@ -1064,12 +1022,12 @@ window.clearOrders = async function() {
     String(now.getMonth() + 1).padStart(2,'0') + '-' +
     String(now.getDate()).padStart(2,'0');
 
-  // Archive snapshot: orders + fees at time of clear
+  // Archive snapshot — admin sets delivery/extra fees per session in history
   const snapshot = {
     clearedAt:   now.toISOString(),
     clearedBy:   getTypedName(),
-    deliveryFee: parseFloat(lastSettings.deliveryFee || 0),
-    extraFees:   parseFloat(lastSettings.extraFees   || 0),
+    deliveryFee: 0,
+    extraFees:   0,
     orders: lastOrders.map(o => ({
       name: o.name, foodName: o.foodName, qty: o.qty || 1, foodPrice: o.foodPrice || null
     }))
@@ -1447,18 +1405,6 @@ onValue(ref(db,'settings'), snap => {
   // Orders lock state
   const ordersLocked = !!lastSettings.ordersLocked;
   applyOrdersLockUI(ordersLocked);
-
-  // Fees — sync all four inputs
-  const df  = parseFloat(lastSettings.deliveryFee || 0);
-  const ef  = parseFloat(lastSettings.extraFees   || 0);
-  const dfInput  = document.getElementById('deliveryFeeInput');
-  const efInput  = document.getElementById('extraFeesInput');
-  const dfInputH = document.getElementById('deliveryFeeInputHistory');
-  const efInputH = document.getElementById('extraFeesInputHistory');
-  if (document.activeElement !== dfInput)  dfInput.value  = df > 0 ? df : '';
-  if (document.activeElement !== efInput)  efInput.value  = ef > 0 ? ef : '';
-  if (document.activeElement !== dfInputH) dfInputH.value = df > 0 ? df : '';
-  if (document.activeElement !== efInputH) efInputH.value = ef > 0 ? ef : '';
 
   updateCartSummary();
   renderOrders(lastOrders);
