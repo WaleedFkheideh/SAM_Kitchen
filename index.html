@@ -1828,7 +1828,7 @@ function impEnsureModal() {
     impFiles.splice(+e.target.dataset.i, 1); impThumbs();
   });
   $('impScan').onclick = impScan;
-  $('impLang').onchange = () => { $('impKeyRow').style.display = $('impLang').value === 'ai' ? '' : 'none'; };
+  $('impLang').onchange = () => { $('impKeyRow').style.display = ($('impLang').value === 'ai' && !IMP_PROXY_URL) ? '' : 'none'; };
   $('impGo').onclick = impCommit;
   $('impAddRow').onclick = () => { impRows.push({ name: '', price: '', flags: ['added manually'], ok: false, upd: null }); impRender(); };
   const list = $('impRows');
@@ -1875,6 +1875,7 @@ function impOpen(rk) {
   let saved = ''; try { saved = localStorage.getItem('samGeminiKey') || ''; } catch (e) {}
   document.getElementById('impKey').value = '';
   document.getElementById('impKey').placeholder = saved ? 'Key saved on this device — leave empty to use it' : 'Gemini API key (kept in this browser only)';
+  document.getElementById('impKeyRow').style.display = IMP_PROXY_URL ? 'none' : '';
   impThumbs(); impRefresh();
   document.getElementById('impModal').classList.add('open');
 }
@@ -1984,6 +1985,8 @@ async function impCommit() {
 }
 
 // ── AI reader (free Gemini key, stored only in this browser) ──
+// Paste your Cloudflare Worker URL between the quotes to share one AI key with all admins (no per-person key).
+const IMP_PROXY_URL = 'https://sam-kitchen.wfkaida.workers.dev/';
 const IMP_MODELS = ['gemini-3.5-flash', 'gemini-2.5-flash', 'gemini-3.1-flash-lite'];
 const IMP_PROMPT = `This image is part of a restaurant menu (Arabic and/or English, a screenshot or a photo). Extract every orderable item with its price.
 Return ONLY a JSON array: [{"name": "...", "price": 0.000, "unsure": false}]
@@ -2023,7 +2026,7 @@ async function impAsk(key, b64) {
   for (const m of IMP_MODELS) {
     let res;
     try {
-      res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + m + ':generateContent?key=' + encodeURIComponent(key), {
+      res = await fetch(IMP_PROXY_URL ? IMP_PROXY_URL + (IMP_PROXY_URL.includes('?') ? '&' : '?') + 'model=' + encodeURIComponent(m) : 'https://generativelanguage.googleapis.com/v1beta/models/' + m + ':generateContent?key=' + encodeURIComponent(key), {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: IMP_PROMPT }, { inline_data: { mime_type: 'image/jpeg', data: b64 } }] }],
@@ -2044,10 +2047,11 @@ async function impAsk(key, b64) {
 }
 
 async function impScanAI(todo, prog) {
-  let key = document.getElementById('impKey').value.trim();
-  if (key) { try { localStorage.setItem('samGeminiKey', key); } catch (e) {} }
+  let key = IMP_PROXY_URL ? '' : document.getElementById('impKey').value.trim();
+  if (IMP_PROXY_URL) { /* shared key lives in the Worker */ }
+  else if (key) { try { localStorage.setItem('samGeminiKey', key); } catch (e) {} }
   else { try { key = localStorage.getItem('samGeminiKey') || ''; } catch (e) {} }
-  if (!key) throw new Error('paste your free Gemini API key first (link above)');
+  if (!key && !IMP_PROXY_URL) throw new Error('paste your free Gemini API key first (link above)');
   let all = [], fi = 0;
   for (const o of todo) {
     fi++; prog.textContent = 'AI is reading image ' + fi + '/' + todo.length + '…';
